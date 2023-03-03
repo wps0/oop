@@ -1,6 +1,6 @@
 package pl.wieczorekp.mim.oop.lab1;
 
-public class Lab1 {
+public class CountNumbers {
     // amount of ones in binary representations of numbers [0, 2^i-1]
     private static long[] ones;
     static {
