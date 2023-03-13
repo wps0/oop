@@ -1,7 +1,11 @@
 package pl.wieczorekp.mim.oop.lab3.mimvalley;
 
+import lombok.Getter;
+
 public abstract class ACrop {
+    @Getter
     private String name;
+    @Getter
     protected int plantTime;
 
     protected ACrop(int plantTime, String name) {
@@ -9,9 +13,10 @@ public abstract class ACrop {
         this.name = name;
     }
 
-    public String getName() {
-        return name;
+    public int getAge(int curTime) {
+        return curTime-plantTime;
     }
+
     public abstract double getCost();
-    public abstract double getValue(int curTime, int duration);
+    public abstract double getValue(int curTime);
 }
