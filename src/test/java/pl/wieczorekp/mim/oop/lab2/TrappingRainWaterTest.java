@@ -2,12 +2,11 @@ package pl.wieczorekp.mim.oop.lab2;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class TappingRainWaterTest {
+class TrappingRainWaterTest {
     private static final int TESTS_NUM = (int) 1e4;
     private static final int HEIGHTS_LB = 0;
     private static final int HEIGHTS_UB = (int) 1e5;
@@ -23,27 +22,27 @@ class TappingRainWaterTest {
     @Test
     void solveManualTests() {
         int[] in = {0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1};
-        int ans = TappingRainWater.solve(in);
+        int ans = TrappingRainWater.solve(in);
         assertTrue(ans == 6, getWaMsg(ans, 6));
 
         in = new int[]{0, 1, 0, 2, 0};
-        ans = TappingRainWater.solve(in);
+        ans = TrappingRainWater.solve(in);
         assertTrue(ans == 1, getWaMsg(ans, 1));
 
         in = new int[]{2, 10, 9, 11, 3};
-        ans = TappingRainWater.solve(in);
+        ans = TrappingRainWater.solve(in);
         assertTrue(ans == 1, getWaMsg(ans, 1));
 
         in = new int[]{11, 10, 9, 5, 3};
-        ans = TappingRainWater.solve(in);
+        ans = TrappingRainWater.solve(in);
         assertTrue(ans == 0, getWaMsg(ans, 0));
 
         in = new int[]{10, 10, 10, 10, 10};
-        ans = TappingRainWater.solve(in);
+        ans = TrappingRainWater.solve(in);
         assertTrue(ans == 0, getWaMsg(ans, 0));
 
         in = new int[]{1, 2, 1, 2, 2, 2, 1, 2, 1, 3};
-        ans = TappingRainWater.solve(in);
+        ans = TrappingRainWater.solve(in);
         assertTrue(ans == 3, getWaMsg(ans, 3));
     }
 
@@ -54,7 +53,7 @@ class TappingRainWaterTest {
             Random r = new Random(seed);
             int[] heights1 = genArray(seed, HEIGHTS_LB, HEIGHTS_UB, r.nextInt(1, MAX_N));
             int[] heights2 = heights1;
-            int ans = TappingRainWater.solve(heights1);
+            int ans = TrappingRainWater.solve(heights1);
             int ansBrute = solveBrute(heights2);
             assertTrue(ans == ansBrute, getWaMsg(ans, ansBrute, i));
         }

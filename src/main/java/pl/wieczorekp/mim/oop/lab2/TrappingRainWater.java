@@ -4,7 +4,7 @@ package pl.wieczorekp.mim.oop.lab2;
 // Complexity:
 //   T(n) = O(n)
 //   M(n) = O(1)
-public class TappingRainWater {
+public class TrappingRainWater {
     public static int solve(int[] height) {
         int minIdx = getMinIdx(height);
         int ans = calcSlope(height, minIdx+1);
