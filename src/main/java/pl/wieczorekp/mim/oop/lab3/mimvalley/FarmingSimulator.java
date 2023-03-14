@@ -39,7 +39,7 @@ public class FarmingSimulator {
                     .mapToDouble(crop -> crop.getValue(t))
                     .sum();
 
-            Thread.sleep(50);
+            Thread.sleep(10);
         }
 
         Map<String, Long> totalCrops = collectedCrops.stream()

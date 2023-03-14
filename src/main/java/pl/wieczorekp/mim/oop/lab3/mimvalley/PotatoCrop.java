@@ -14,8 +14,8 @@ public class PotatoCrop extends ACrop {
 
     @Override
     public double getValue(int curTime) {
-        if (curTime-plantTime <= MAX_VALUE)
-            return curTime-plantTime;
+        if (getAge(curTime) <= MAX_VALUE)
+            return getAge(curTime);
         return 0;
     }
 }
