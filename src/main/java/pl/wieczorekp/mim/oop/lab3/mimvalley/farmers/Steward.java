@@ -1,4 +1,8 @@
-package pl.wieczorekp.mim.oop.lab3.mimvalley;
+package pl.wieczorekp.mim.oop.lab3.mimvalley.farmers;
+
+import pl.wieczorekp.mim.oop.lab3.mimvalley.Garden;
+import pl.wieczorekp.mim.oop.lab3.mimvalley.crops.ACrop;
+import pl.wieczorekp.mim.oop.lab3.mimvalley.crops.CropsFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,7 +10,8 @@ import java.util.Optional;
 
 public class Steward extends AFarmer {
     private double[] cropValues;
-    protected Steward(String name, int gardenSize) {
+
+    public Steward(String name, int gardenSize) {
         super(name);
         this.cropValues = new double[gardenSize];
         for (int i = 0; i < gardenSize; i++) {

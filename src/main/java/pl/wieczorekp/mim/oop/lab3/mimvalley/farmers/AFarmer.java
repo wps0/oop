@@ -1,13 +1,16 @@
-package pl.wieczorekp.mim.oop.lab3.mimvalley;
+package pl.wieczorekp.mim.oop.lab3.mimvalley.farmers;
 
 import lombok.Getter;
+import pl.wieczorekp.mim.oop.lab3.mimvalley.Garden;
+import pl.wieczorekp.mim.oop.lab3.mimvalley.crops.ACrop;
+import pl.wieczorekp.mim.oop.lab3.mimvalley.crops.CropsFactory;
 
 import java.util.List;
 import java.util.Optional;
 
 public abstract class AFarmer {
     @Getter
-    private String name;
+    private final String name;
 
     protected AFarmer(String name) {
         this.name = name;
@@ -25,7 +28,7 @@ public abstract class AFarmer {
         System.out.printf("[%s]#%d Posadzono: %s (koszt: %.2f PLN)\n", name, time, crop.getName(), crop.getCost());
         return crop.getCost();
     }
-    public Optional<ACrop> harvest(Garden garden, int slot, final int time) {;
+    public Optional<ACrop> harvest(Garden garden, int slot, final int time) {
         if (garden.getCrop(slot).isEmpty()) {
             return Optional.empty();
         }

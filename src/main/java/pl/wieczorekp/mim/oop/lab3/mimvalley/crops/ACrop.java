@@ -1,10 +1,10 @@
-package pl.wieczorekp.mim.oop.lab3.mimvalley;
+package pl.wieczorekp.mim.oop.lab3.mimvalley.crops;
 
 import lombok.Getter;
 
 public abstract class ACrop {
     @Getter
-    private String name;
+    private final String name;
     @Getter
     protected int plantTime;
 

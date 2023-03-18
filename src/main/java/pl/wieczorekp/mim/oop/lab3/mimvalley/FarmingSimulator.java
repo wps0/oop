@@ -1,6 +1,9 @@
 package pl.wieczorekp.mim.oop.lab3.mimvalley;
 
 import lombok.SneakyThrows;
+import pl.wieczorekp.mim.oop.lab3.mimvalley.crops.ACrop;
+import pl.wieczorekp.mim.oop.lab3.mimvalley.crops.CropsFactory;
+import pl.wieczorekp.mim.oop.lab3.mimvalley.farmers.AFarmer;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -8,9 +11,9 @@ import java.util.stream.Collectors;
 import static java.util.stream.Collectors.groupingBy;
 
 public class FarmingSimulator {
-    private Garden garden;
-    private AFarmer farmer;
-    private CropsFactory cropsFactory;
+    private final Garden garden;
+    private final AFarmer farmer;
+    private final CropsFactory cropsFactory;
 
     private double incomes;
     private double expenses;

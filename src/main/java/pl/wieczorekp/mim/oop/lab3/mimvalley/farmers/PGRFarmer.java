@@ -1,12 +1,16 @@
-package pl.wieczorekp.mim.oop.lab3.mimvalley;
+package pl.wieczorekp.mim.oop.lab3.mimvalley.farmers;
+
+import pl.wieczorekp.mim.oop.lab3.mimvalley.Garden;
+import pl.wieczorekp.mim.oop.lab3.mimvalley.crops.ACrop;
+import pl.wieczorekp.mim.oop.lab3.mimvalley.crops.CropsFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class PGRFarmer extends AFarmer {
-    protected PGRFarmer(String name) {
-        super("Pracownik PGR");
+    public PGRFarmer(String name) {
+        super(name + " (pracownik PGR)");
     }
 
     @Override

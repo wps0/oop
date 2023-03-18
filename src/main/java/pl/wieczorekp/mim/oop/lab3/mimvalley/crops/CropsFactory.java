@@ -1,9 +1,9 @@
-package pl.wieczorekp.mim.oop.lab3.mimvalley;
+package pl.wieczorekp.mim.oop.lab3.mimvalley.crops;
 
 import java.util.Random;
 
 public class CropsFactory {
-    private Random rng;
+    private final Random rng;
     private final int cropCount;
 
     public CropsFactory(Random rng) {

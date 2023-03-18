@@ -1,5 +1,9 @@
 package pl.wieczorekp.mim.oop.lab3.mimvalley;
 
+import pl.wieczorekp.mim.oop.lab3.mimvalley.crops.CropsFactory;
+import pl.wieczorekp.mim.oop.lab3.mimvalley.farmers.PGRFarmer;
+import pl.wieczorekp.mim.oop.lab3.mimvalley.farmers.Steward;
+
 import java.util.Random;
 
 public class MIMValley {

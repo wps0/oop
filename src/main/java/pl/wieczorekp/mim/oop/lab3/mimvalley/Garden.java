@@ -1,6 +1,7 @@
 package pl.wieczorekp.mim.oop.lab3.mimvalley;
 
 import lombok.Getter;
+import pl.wieczorekp.mim.oop.lab3.mimvalley.crops.ACrop;
 
 import java.util.ArrayList;
 import java.util.List;

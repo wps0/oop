@@ -1,4 +1,4 @@
-package pl.wieczorekp.mim.oop.lab3.mimvalley;
+package pl.wieczorekp.mim.oop.lab3.mimvalley.crops;
 
 public class PotatoCrop extends ACrop {
     private static final int MAX_VALUE = 5;

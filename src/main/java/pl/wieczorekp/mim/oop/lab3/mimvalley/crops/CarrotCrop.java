@@ -1,4 +1,4 @@
-package pl.wieczorekp.mim.oop.lab3.mimvalley;
+package pl.wieczorekp.mim.oop.lab3.mimvalley.crops;
 
 import static java.lang.Math.abs;
 import static java.lang.Math.sin;
