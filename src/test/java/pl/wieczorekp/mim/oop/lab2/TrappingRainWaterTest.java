@@ -1,90 +1,109 @@
 package pl.wieczorekp.mim.oop.lab2;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
+import org.junit.jupiter.api.Timeout.ThreadMode;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class TrappingRainWaterTest {
-    private static final int TESTS_NUM = (int) 1e4;
-    private static final int HEIGHTS_LB = 0;
-    private static final int HEIGHTS_UB = (int) 1e5;
-    private static final int MAX_N = (int) 1e2;
+    private static final int AUTOMATIC_TESTS_AMOUNT = 1_000;
+    private static final int AUTOMATIC_TESTS_SEED = 910_518_740;
+    private static final int AUTOMATIC_TESTS_HEIGHTS_LB = 0;
+    private static final int AUTOMATIC_TESTS_HEIGHTS_UB = (int) 1e5;
+    private static final int AUTOMATIC_TESTS_MAX_LEN = (int) 1e3;
 
-    String getWaMsg(long got, long expected, int testNr) {
-        return "WA (test " + testNr + "): (got: " + got + "; expected: " + expected + ")";
-    }
-    String getWaMsg(long got, long expected) {
-        return getWaMsg(got, expected, -1);
+    String getWaMsg(int testNr) {
+        return "WA (test " + testNr + ")";
     }
 
     @Test
-    void solveManualTests() {
-        int[] in = {0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1};
-        int ans = TrappingRainWater.solve(in);
-        assertTrue(ans == 6, getWaMsg(ans, 6));
+    void givenManualTestsShouldSolveTheProblem() {
+        // given
+        int[] in1 = {0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1};
+        int[] in2 = {0, 1, 0, 2, 0};
+        int[] in3 = {2, 10, 9, 11, 3};
+        int[] in4 = {11, 10, 9, 5, 3};
+        int[] in5 = {10, 10, 10, 10, 10};
+        int[] in6 = {1, 2, 1, 2, 2, 2, 1, 2, 1, 3};
 
-        in = new int[]{0, 1, 0, 2, 0};
-        ans = TrappingRainWater.solve(in);
-        assertTrue(ans == 1, getWaMsg(ans, 1));
+        // when
+        int ans1 = TrappingRainWater.solve(in1);
+        int ans2 = TrappingRainWater.solve(in2);
+        int ans3 = TrappingRainWater.solve(in3);
+        int ans4 = TrappingRainWater.solve(in4);
+        int ans5 = TrappingRainWater.solve(in5);
+        int ans6 = TrappingRainWater.solve(in6);
 
-        in = new int[]{2, 10, 9, 11, 3};
-        ans = TrappingRainWater.solve(in);
-        assertTrue(ans == 1, getWaMsg(ans, 1));
+        // then
+        assertEquals(6, ans1, getWaMsg(1));
+        assertEquals(1, ans2, getWaMsg(2));
+        assertEquals(1, ans3, getWaMsg(3));
+        assertEquals(0, ans4, getWaMsg(4));
+        assertEquals(0, ans5, getWaMsg(5));
+        assertEquals(3, ans6, getWaMsg(6));
+    }
 
-        in = new int[]{11, 10, 9, 5, 3};
-        ans = TrappingRainWater.solve(in);
-        assertTrue(ans == 0, getWaMsg(ans, 0));
+    @Timeout(value = 1)
+    @ParameterizedTest(name = "seed = {0}")
+    @MethodSource("provideSeedsForAutomaticTests")
+    void shouldTestSolveMethodAutomatically(long seed) {
+        // given
+        TrappingRainWaterGen gen = new TrappingRainWaterGen(seed, AUTOMATIC_TESTS_HEIGHTS_LB, AUTOMATIC_TESTS_HEIGHTS_UB, AUTOMATIC_TESTS_MAX_LEN);
+        int[] heights1 = gen.genArray();
+        int[] heights2 = heights1;
 
-        in = new int[]{10, 10, 10, 10, 10};
-        ans = TrappingRainWater.solve(in);
-        assertTrue(ans == 0, getWaMsg(ans, 0));
+        // when
+        int ans = TrappingRainWater.solve(heights1);
+        int ansBrute = new TrappingRainWaterBrute(heights2).solve();
 
-        in = new int[]{1, 2, 1, 2, 2, 2, 1, 2, 1, 3};
-        ans = TrappingRainWater.solve(in);
-        assertTrue(ans == 3, getWaMsg(ans, 3));
+        // then
+        assertEquals(ansBrute, ans, getWaMsg((int) seed));
     }
 
     @Test
-    void solveAutomaticTests() {
-        for (int i = 0; i < TESTS_NUM; i++) {
-            long seed = f(i);
-            Random r = new Random(seed);
-            int[] heights1 = genArray(seed, HEIGHTS_LB, HEIGHTS_UB, r.nextInt(1, MAX_N));
-            int[] heights2 = heights1;
-            int ans = TrappingRainWater.solve(heights1);
-            int ansBrute = solveBrute(heights2);
-            assertTrue(ans == ansBrute, getWaMsg(ans, ansBrute, i));
+    @Timeout(value = 85, unit = TimeUnit.MILLISECONDS, threadMode = ThreadMode.SEPARATE_THREAD)
+    void givenBigDataShouldRunInLinearTime1() {
+        // given
+        TrappingRainWaterGen gen = new TrappingRainWaterGen(92331132, 0, 2<<28, 100_000, 100_000);
+        int[] bigTest = gen.genArray();
+
+        // when
+        int ans = TrappingRainWater.solve(bigTest);
+
+        // then
+        assertEquals(1101294971, ans);
+    }
+
+    @Test
+    @Timeout(value = 85, unit = TimeUnit.MILLISECONDS, threadMode = ThreadMode.SEPARATE_THREAD)
+    void givenBigDataShouldRunInLinearTime2() {
+        // given
+        TrappingRainWaterGen gen = new TrappingRainWaterGen(2<<23+3, 0, 2<<11, 1_000_000, 1_000_000);
+        int[] bigTest = gen.genArray();
+
+        // when
+        int ans = TrappingRainWater.solve(bigTest);
+
+        // then
+        assertEquals(980752610, ans);
+    }
+
+    private static LongStream provideSeedsForAutomaticTests() {
+        LongStream.Builder seedStreamBuilder = LongStream.builder().add(1);
+        Random rng = new Random(AUTOMATIC_TESTS_SEED);
+
+        for (int i = 0; i < AUTOMATIC_TESTS_AMOUNT; i++) {
+            seedStreamBuilder = seedStreamBuilder.add(rng.nextInt(1, Integer.MAX_VALUE));
         }
-    }
 
-    private long f(long x) {
-        final long MOD = 1000000007;
-        final long n1 = (((x * x % MOD * 319 % MOD * x % MOD + 5) * x + 1) % MOD + x*120 % MOD * x % MOD + x % MOD + 32) % MOD;
-        return (n1 + n1^x + 3) % MOD;
-    }
-
-    private int[] genArray(long seed, int lb, int ub, int len) {
-        assert ub >= lb;
-        assert lb >= 0;
-        Random r = new Random(seed);
-        return r.ints(len).map(x -> Math.abs(x)).map(x -> x % (ub-lb+1) + lb).toArray();
-    }
-
-    private int solveBrute(int[] height) {
-        int ans = 0;
-        for (int i = 0; i < height.length; i++) {
-            for (int j = i+1; j < height.length; j++) {
-                int lvl = Math.min(height[i], height[j]);
-                for (int k = i+1; k < j; k++) {
-                    if (height[k] < lvl) {
-                        ans += lvl - height[k];
-                        height[k] = lvl;
-                    }
-                }
-            }
-        }
-        return ans;
+        return seedStreamBuilder.build();
     }
 }
