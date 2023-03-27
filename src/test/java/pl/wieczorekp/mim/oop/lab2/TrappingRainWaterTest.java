@@ -83,7 +83,7 @@ class TrappingRainWaterTest {
     }
 
     @Test
-    @Timeout(value = 85, unit = TimeUnit.MILLISECONDS, threadMode = ThreadMode.SEPARATE_THREAD)
+    @Timeout(value = 65, unit = TimeUnit.MILLISECONDS, threadMode = ThreadMode.SEPARATE_THREAD)
     void givenBigDataShouldRunInLinearTime2() {
         // given
         TrappingRainWaterGen gen = new TrappingRainWaterGen(2<<23+3, 0, 2<<11, 1_000_000, 1_000_000);
