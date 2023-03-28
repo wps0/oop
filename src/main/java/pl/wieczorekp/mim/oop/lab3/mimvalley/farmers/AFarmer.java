@@ -28,6 +28,7 @@ public abstract class AFarmer {
         System.out.printf("[%s]#%d Posadzono: %s (koszt: %.2f PLN)\n", name, time, crop.getName(), crop.getCost());
         return crop.getCost();
     }
+
     public Optional<ACrop> harvest(Garden garden, int slot, final int time) {
         if (garden.getCrop(slot).isEmpty()) {
             return Optional.empty();

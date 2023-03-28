@@ -8,6 +8,7 @@ import java.util.Random;
 
 public class MIMValley {
     private static final int ROUNDS = 23;
+
     public static void main(String[] args) {
         Garden garden = new Garden(5);
         PGRFarmer pgrFarmer = new PGRFarmer("Zbyszek");
