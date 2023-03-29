@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.*;
 import java.util.AbstractMap.SimpleEntry;
 
@@ -23,13 +25,14 @@ public class Graph {
         this.edgeCount = 0;
     }
 
-    public void readGraph() {
-        Scanner s = new Scanner(System.in);
+    public void readGraph(File sourceFile) throws FileNotFoundException {
+        assert this.graphSize == 0;
+
+        Scanner s = new Scanner(sourceFile);
         int graphSize = s.nextInt();
         int edgeCount = s.nextInt();
 
-        clearGraph();
-        initGraph(graphSize, edgeCount);
+        initGraph(graphSize);
 
         // read input
         for (int i = 0; i < edgeCount; i++) {
@@ -42,35 +45,23 @@ public class Graph {
         }
     }
 
-    public void clearGraph() {
-        this.graphSize = 0;
-        this.edgeCount = 0;
-        this.vertices.clear();
-    }
-
-    public void initGraph(int graphSize, int edgeCount) {
-        this.edgeCount = edgeCount;
+    public void initGraph(int graphSize) {
         for (int i = 0; i < graphSize; i++) {
             this.addVertex();
         }
     }
 
     public Vertex addVertex() {
-        Vertex v = new Vertex(graphSize);
-        vertices.add(v);
-        graphSize++;
-        return v;
+        return addVertex(graphSize);
     }
 
     protected Vertex addVertex(int id) {
-        vertices.ensureCapacity(id+1);
-        graphSize = Integer.max(graphSize, id+1);
-
-        Vertex v = vertices.get(id);
-        if (v != null)
-            return v;
-
-        vertices.set(id, new Vertex(id));
+        if (graphSize <= id) {
+            for (int i = graphSize; i <= id; i++) {
+                vertices.add(new Vertex(i));
+            }
+            graphSize = id+1;
+        }
         return vertices.get(id);
     }
 
@@ -93,12 +84,36 @@ public class Graph {
         edgeCount++;
     }
 
+    public boolean isConnected() {
+        boolean[] vis = new boolean[graphSize];
+        return isConnectedDfs(0, vis) == graphSize;
+    }
+
+    private int isConnectedDfs(int v, boolean[] vis) {
+        vis[v] = true;
+        Vertex cur = vertices.get(v);
+
+        int visCnt = 0;
+        for (Edge e : cur.getConnectedEdges()) {
+            Vertex neigh = e.getNeighbourOf(cur);
+
+            if (vis[neigh.getId()])
+                continue;
+            visCnt += isConnectedDfs(neigh.getId(), vis);
+        }
+
+        return visCnt;
+    }
+
     @Override
     public String toString() {
-        return "Graph{" +
-                "vertices=" + vertices +
-                ", graphSize=" + graphSize +
-                ", edgeCount=" + edgeCount +
-                '}';
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("Graph (|V|: " + graphSize + ", |E|: " + edgeCount + ")\n");
+        for (Vertex v : vertices) {
+            stringBuilder.append(" ");
+            stringBuilder.append(v);
+            stringBuilder.append('\n');
+        }
+        return stringBuilder.toString();
     }
 }

@@ -19,6 +19,10 @@ public class Edge implements Comparable<Edge> {
         this.weight = weight;
     }
 
+    public Vertex getNeighbourOf(Vertex v) {
+        return source == v ? destination : source;
+    }
+
     // compare by edge weight
     @Override
     public int compareTo(Edge edge) {

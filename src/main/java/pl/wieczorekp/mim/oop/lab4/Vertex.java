@@ -16,12 +16,6 @@ public class Vertex {
         this.connectedEdges = new LinkedList<>();
     }
 
-    public List<Vertex> getNeighbours() {
-        return connectedEdges.stream()
-                .map(Edge::getDestination)
-                .toList();
-    }
-
     public Edge addNeighbour(Vertex neighbour, int cost) {
         Edge e = new Edge(this, neighbour, cost);
         connectedEdges.add(e);

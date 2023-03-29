@@ -1,13 +1,16 @@
 package pl.wieczorekp.mim.oop.lab4;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+
 public class MST {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
         ConnectedGraph g = new ConnectedGraph();
-        g.readGraph();
-        System.out.println(g);
-
+        g.readGraph(new File(args[0]));
+//        System.out.println(g);
         ConnectedGraph mst = g.findMST();
+        System.out.println(mst.isConnected());
         System.out.println(mst);
     }
 }
