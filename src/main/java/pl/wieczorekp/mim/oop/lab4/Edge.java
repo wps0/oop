@@ -1,14 +1,38 @@
 package pl.wieczorekp.mim.oop.lab4;
 
-public class Edge implements Comparable<Edge> {
-    private int src;
-    private int dst;
-    private int cost;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
+public class Edge implements Comparable<Edge> {
+    @Getter
+    private Vertex source;
+    @NonNull @Getter
+    private Vertex destination;
+    @NonNull @Getter
+    private int weight;
+
+    public Edge(Vertex source, @NonNull Vertex destination, @NonNull int weight) {
+        this.source = source;
+        this.destination = destination;
+        this.weight = weight;
+    }
+
+    // compare by edge weight
     @Override
     public int compareTo(Edge edge) {
-        if (v1.getKey() == v2.getKey())
+        if (weight < edge.getWeight())
+            return -1;
+        if (weight == edge.getWeight())
             return 0;
-        return v1.getKey() < v2.getKey() ? -1 : 1;
+        return 1;
+    }
+
+    @Override
+    public String toString() {
+        return "Edge{" + source.getId() + " ~> " + destination.getId() +
+                ", weight=" + weight +
+                '}';
     }
 }

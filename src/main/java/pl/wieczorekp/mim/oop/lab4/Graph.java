@@ -1,70 +1,104 @@
 package pl.wieczorekp.mim.oop.lab4;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 import java.util.*;
 import java.util.AbstractMap.SimpleEntry;
 
+@RequiredArgsConstructor
 public class Graph {
-    @Getter
-    private ArrayList<ArrayList<SimpleEntry<Integer, Integer>>> g;
-    private int graphSize;
-    private int edgeCount;
+    @Getter @NonNull
+    protected ArrayList<Vertex> vertices;
+    @NonNull
+    protected int graphSize;
+    @NonNull
+    protected int edgeCount;
 
-    Graph(int graphSize, int edgeCount) {
-        this.graphSize = graphSize;
-        this.edgeCount = edgeCount;
-    }
-
-    Graph() {
-        graphSize = 0;
-        edgeCount = 0;
+    public Graph() {
+        this.vertices = new ArrayList<>();
+        this.graphSize = 0;
+        this.edgeCount = 0;
     }
 
     public void readGraph() {
         Scanner s = new Scanner(System.in);
         int graphSize = s.nextInt();
         int edgeCount = s.nextInt();
-        g = new ArrayList<>(graphSize+1);
 
-        this.graphSize = graphSize;
-        this.edgeCount = edgeCount;
+        clearGraph();
+        initGraph(graphSize, edgeCount);
 
+        // read input
         for (int i = 0; i < edgeCount; i++) {
             int a, b, cost;
-            a = s.nextInt();
-            b = s.nextInt();
+            a = s.nextInt()-1;
+            b = s.nextInt()-1;
             cost = s.nextInt();
 
-            g.get(a).add(b, new SimpleEntry<>(b, cost));
+            addEdge(a, b, cost);
         }
     }
 
-    public void addEdge(int src, int dst, int cost) {
-        g.get(src).add(dst, new SimpleEntry<>(dst, cost));
+    public void clearGraph() {
+        this.graphSize = 0;
+        this.edgeCount = 0;
+        this.vertices.clear();
     }
 
-    public Graph findMST() {
-        Graph mst = new Graph(graphSize, graphSize-1);
-        boolean[] vis = new boolean[graphSize];
-
-        PriorityQueue<Edge> pq = new PriorityQueue<>();
-
-        while (!pq.isEmpty()) {
-            SimpleEntry<Integer, Integer> top = pq.poll();
-
-            if (vis[top.getKey()])
-                continue;
-
-            addEdge()
-
-            for (SimpleEntry<Integer, Integer> v : g.get(top.getKey())) {
-                if (vis[v.getKey()])
-                    continue;
-                pq.add(v);
-            }
+    public void initGraph(int graphSize, int edgeCount) {
+        this.edgeCount = edgeCount;
+        for (int i = 0; i < graphSize; i++) {
+            this.addVertex();
         }
+    }
 
-        return mst;
+    public Vertex addVertex() {
+        Vertex v = new Vertex(graphSize);
+        vertices.add(v);
+        graphSize++;
+        return v;
+    }
+
+    protected Vertex addVertex(int id) {
+        vertices.ensureCapacity(id+1);
+        graphSize = Integer.max(graphSize, id+1);
+
+        Vertex v = vertices.get(id);
+        if (v != null)
+            return v;
+
+        vertices.set(id, new Vertex(id));
+        return vertices.get(id);
+    }
+
+    public boolean containsVertex(int id) {
+        if (id >= graphSize)
+            return false;
+        return vertices.get(id) != null;
+    }
+
+    public void addEdge(Edge e) {
+        assert e.getSource() != null;
+        addEdge(e.getSource().getId(), e.getDestination().getId(), e.getWeight());
+    }
+
+    public void addEdge(int a, int b, int cost) {
+        Vertex aVertex = vertices.get(a);
+        Vertex bVertex = vertices.get(b);
+        vertices.get(a).addNeighbour(bVertex, cost);
+        vertices.get(b).addNeighbour(aVertex, cost);
+        edgeCount++;
+    }
+
+    @Override
+    public String toString() {
+        return "Graph{" +
+                "vertices=" + vertices +
+                ", graphSize=" + graphSize +
+                ", edgeCount=" + edgeCount +
+                '}';
     }
 }
