@@ -8,9 +8,9 @@ import lombok.RequiredArgsConstructor;
 public class Edge implements Comparable<Edge> {
     @Getter
     private Vertex source;
-    @NonNull @Getter
+    @Getter
     private Vertex destination;
-    @NonNull @Getter
+    @Getter
     private int weight;
 
     public Edge(Vertex source, @NonNull Vertex destination, @NonNull int weight) {

@@ -9,21 +9,24 @@ public class ConnectedGraph extends Graph {
 
         PriorityQueue<Edge> pq = new PriorityQueue<>();
         mst.addVertex(0);
-        pq.addAll(this.vertices.get(0).getConnectedEdges());
+        pq.addAll(vertices.get(0).getConnectedEdges());
 
         while (!pq.isEmpty()) {
             Edge top = pq.poll();
+            int uId = top.getSource().getId();
+            int vId = top.getDestination().getId();
 
-            if (mst.containsVertex(top.getSource().getId()) && mst.containsVertex(top.getDestination().getId()))
+            if (mst.containsVertex(uId) && mst.containsVertex(vId)
+                    && mst.getVertex(uId).hasNeighbours() && mst.getVertex(vId).hasNeighbours())
                 continue;
 
-            Vertex notInMst = top.getSource();
-            if (mst.containsVertex(notInMst.getId()))
-                notInMst = top.getDestination();
-            mst.addVertex(notInMst.getId());
-            mst.addEdge(top);
+            int notInMst = uId;
+            if (mst.containsVertex(notInMst))
+                notInMst = vId;
+            mst.addVertex(notInMst);
+            mst.addEdge(new Edge(mst.getVertex(uId), mst.getVertex(vId), top.getWeight()));
 
-            pq.addAll(notInMst.getConnectedEdges());
+            pq.addAll(this.getVertex(notInMst).getConnectedEdges());
         }
 
         return mst;

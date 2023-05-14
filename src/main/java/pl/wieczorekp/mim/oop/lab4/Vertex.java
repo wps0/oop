@@ -22,6 +22,10 @@ public class Vertex {
         return e;
     }
 
+    public boolean hasNeighbours() {
+        return !connectedEdges.isEmpty();
+    }
+
     @Override
     public String toString() {
         return "Vertex{" +

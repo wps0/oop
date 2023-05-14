@@ -14,9 +14,7 @@ import java.util.AbstractMap.SimpleEntry;
 public class Graph {
     @Getter @NonNull
     protected ArrayList<Vertex> vertices;
-    @NonNull
     protected int graphSize;
-    @NonNull
     protected int edgeCount;
 
     public Graph() {
@@ -65,6 +63,11 @@ public class Graph {
         return vertices.get(id);
     }
 
+    public Vertex getVertex(int id) {
+        assert id < graphSize;
+        return vertices.get(id);
+    }
+
     public boolean containsVertex(int id) {
         if (id >= graphSize)
             return false;
@@ -93,7 +96,7 @@ public class Graph {
         vis[v] = true;
         Vertex cur = vertices.get(v);
 
-        int visCnt = 0;
+        int visCnt = 1;
         for (Edge e : cur.getConnectedEdges()) {
             Vertex neigh = e.getNeighbourOf(cur);
 
@@ -103,6 +106,20 @@ public class Graph {
         }
 
         return visCnt;
+    }
+
+    public int sumEdgeWeights() {
+        int sum = 0;
+
+        for (Vertex v : vertices) {
+            for (Edge e : v.getConnectedEdges()) {
+                Vertex u = e.getNeighbourOf(v);
+                if (u.getId() <= v.getId())
+                    sum += e.getWeight();
+            }
+        }
+
+        return sum;
     }
 
     @Override
