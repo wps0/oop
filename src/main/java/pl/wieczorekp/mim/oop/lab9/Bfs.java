@@ -3,8 +3,10 @@ package pl.wieczorekp.mim.oop.lab9;
 import pl.wieczorekp.mim.oop.lab9.gates.Gate;
 import pl.wieczorekp.mim.oop.lab9.gates.Wire;
 
-import java.util.*;
-import java.util.Map.Entry;
+import java.util.ArrayDeque;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Queue;
 
 public abstract class Bfs<T> {
     private final Circuit circuit;

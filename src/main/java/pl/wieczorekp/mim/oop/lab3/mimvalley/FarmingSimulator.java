@@ -5,7 +5,9 @@ import pl.wieczorekp.mim.oop.lab3.mimvalley.crops.ACrop;
 import pl.wieczorekp.mim.oop.lab3.mimvalley.crops.CropsFactory;
 import pl.wieczorekp.mim.oop.lab3.mimvalley.farmers.AFarmer;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.groupingBy;

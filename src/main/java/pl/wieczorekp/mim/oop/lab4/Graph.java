@@ -1,14 +1,13 @@
 package pl.wieczorekp.mim.oop.lab4;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.*;
-import java.util.AbstractMap.SimpleEntry;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 @RequiredArgsConstructor
 public class Graph {

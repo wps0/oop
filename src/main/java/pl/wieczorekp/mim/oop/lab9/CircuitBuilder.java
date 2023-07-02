@@ -2,7 +2,9 @@ package pl.wieczorekp.mim.oop.lab9;
 
 import pl.wieczorekp.mim.oop.lab9.gates.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CircuitBuilder<T> {
     private final Map<T, Gate> mnemonics;

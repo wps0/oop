@@ -8,10 +8,9 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class TrappingRainWaterTest {
     private static final int AUTOMATIC_TESTS_AMOUNT = 1_000;

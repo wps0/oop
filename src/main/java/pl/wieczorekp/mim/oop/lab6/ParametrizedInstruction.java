@@ -1,9 +1,6 @@
 package pl.wieczorekp.mim.oop.lab6;
 
 import lombok.Getter;
-import lombok.Setter;
-
-import java.util.Scanner;
 
 public class ParametrizedInstruction<T> extends Instruction {
     @Getter

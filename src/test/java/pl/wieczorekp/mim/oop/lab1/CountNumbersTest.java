@@ -2,7 +2,7 @@ package pl.wieczorekp.mim.oop.lab1;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CountNumbersTest {
     private static final int MAX_N = (int) 1e4;

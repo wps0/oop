@@ -1,6 +1,9 @@
 package pl.wieczorekp.mim.oop.lab6;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Optional;
+import java.util.Stack;
 
 class StackCalculator {
     private static final Instruction[] AVAILABLE_INSTRUCTIONS = {
