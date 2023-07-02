@@ -72,6 +72,16 @@ public abstract class Gate {
         }
     }
 
+    public void disconnectFrom(Wire w) {
+        if (w.src() == this) {
+            outputs.remove(w);
+        } else if (w.dst() == this) {
+            inputs.remove(w);
+        } else {
+            throw new IllegalArgumentException("The wire is not connected to this gate");
+        }
+    }
+
     private void updateOutputWires() {
         outputs.forEach(wire -> wire.setState(value));
     }

@@ -23,6 +23,6 @@ public class DepthBfs extends Bfs<Integer> {
 
     @Override
     protected void onProcessingStart(Gate g, Gate prv) {
-        dist.put(g, Integer.min(dist.getOrDefault(g, Integer.MAX_VALUE), dist.get(prv) + 1));
+        dist.put(g, Integer.min(dist.getOrDefault(g, Integer.MAX_VALUE), dist.getOrDefault(prv, -1) + 1));
     }
 }
