@@ -29,7 +29,7 @@ public abstract class Bfs<T> {
             Gate g = q.peek().first();
             Gate src = q.poll().second();
 
-            if (vis.get(g)) {
+            if (vis.getOrDefault(g, false)) {
                 continue;
             }
             vis.put(g, true);

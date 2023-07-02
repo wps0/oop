@@ -6,7 +6,7 @@ public class ParityGate extends Gate {
         if (!isInFullState()) {
             throw new IllegalStateException("The gate is not in a full state");
         }
-        return inputs.parallelStream()
+        return inputs().parallelStream()
                 .map(Wire::state)
                 .filter(state -> state)
                 .count() % 2 == 1;

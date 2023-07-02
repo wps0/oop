@@ -49,9 +49,7 @@ public abstract class Gate {
         value = evaluate();
         updateOutputWires();
 
-
         for (Wire g : outputs) {
-            g.setState(value);
             if (g.dst().isInFullState()) {
                 propagate();
             }
