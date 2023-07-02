@@ -1,34 +1,29 @@
 package pl.wieczorekp.mim.oop.lab9.gates;
 
+import lombok.Value;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import pl.wieczorekp.mim.oop.lab9.Circuit;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class AndGateTest {
-
+class NotGateTest {
     @ParameterizedTest
-    @MethodSource("pl.wieczorekp.mim.oop.lab9.gates.GateTestUtils#primitiveBooleanArgumentSource")
-    void givenNInputsShouldAndCorrectly(boolean[] inputs) {
+    @ValueSource(booleans = {true, false})
+    void givenOneInputShouldNotCorrectly(boolean input) {
         // given
-        Boolean[] nonPrimitiveInputs = new Boolean[inputs.length];
-        IntStream.range(0, inputs.length).forEach(i -> nonPrimitiveInputs[i] = inputs[i]);
-        boolean expected = Arrays.stream(nonPrimitiveInputs).allMatch(in -> in);
+        boolean expected = !input;
 
         Circuit c = new Circuit();
-        Gate gate = new AndGate();
+        NotGate gate = new NotGate();
         TerminatingGate sink = new TerminatingGate();
-        List<SignalEmittingGate> taps = IntStream.range(0, inputs.length)
-                .mapToObj(i -> new SignalEmittingGate(inputs[i]))
-                .collect(Collectors.toList());
+        List<SignalEmittingGate> taps = List.of(new SignalEmittingGate(input));
 
         for (Gate tap : taps) {
             Wire tapGateWire = new Wire(tap, gate);
@@ -39,11 +34,12 @@ class AndGateTest {
         gate.connectTo(gateSinkWire);
         sink.connectTo(gateSinkWire);
 
+
         c.addInputGates(taps);
         c.setOutputGate(sink);
 
         // when
-        boolean actual = c.evaluate(inputs);
+        boolean actual = c.evaluate(new boolean[]{input});
 
         // then
         assertEquals(expected, actual);

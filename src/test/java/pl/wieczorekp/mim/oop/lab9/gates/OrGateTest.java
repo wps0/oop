@@ -1,7 +1,6 @@
 package pl.wieczorekp.mim.oop.lab9.gates;
 
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import pl.wieczorekp.mim.oop.lab9.Circuit;
 
@@ -9,22 +8,20 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class AndGateTest {
-
+class OrGateTest {
     @ParameterizedTest
     @MethodSource("pl.wieczorekp.mim.oop.lab9.gates.GateTestUtils#primitiveBooleanArgumentSource")
-    void givenNInputsShouldAndCorrectly(boolean[] inputs) {
+    void givenNInputsShouldOrCorrectly(boolean[] inputs) {
         // given
         Boolean[] nonPrimitiveInputs = new Boolean[inputs.length];
         IntStream.range(0, inputs.length).forEach(i -> nonPrimitiveInputs[i] = inputs[i]);
-        boolean expected = Arrays.stream(nonPrimitiveInputs).allMatch(in -> in);
+        boolean expected = Arrays.stream(nonPrimitiveInputs).anyMatch(in -> in);
 
         Circuit c = new Circuit();
-        Gate gate = new AndGate();
+        Gate gate = new OrGate();
         TerminatingGate sink = new TerminatingGate();
         List<SignalEmittingGate> taps = IntStream.range(0, inputs.length)
                 .mapToObj(i -> new SignalEmittingGate(inputs[i]))
@@ -38,6 +35,7 @@ class AndGateTest {
         Wire gateSinkWire = new Wire(gate, sink);
         gate.connectTo(gateSinkWire);
         sink.connectTo(gateSinkWire);
+
 
         c.addInputGates(taps);
         c.setOutputGate(sink);
