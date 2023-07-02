@@ -51,7 +51,7 @@ public abstract class Gate {
 
         for (Wire g : outputs) {
             if (g.dst().isInFullState()) {
-                propagate();
+                g.dst().propagate();
             }
         }
     }

@@ -30,9 +30,15 @@ class AndGateTest {
                 .mapToObj(i -> new SignalEmittingGate(inputs[i]))
                 .collect(Collectors.toList());
 
-        taps.forEach(input -> gate.connectTo(new Wire(input, gate)));
-        taps.forEach(input -> input.connectTo(new Wire(input, gate)));
-        gate.connectTo(new Wire(gate, sink));
+        for (Gate tap : taps) {
+            Wire tapGateWire = new Wire(tap, gate);
+            tap.connectTo(tapGateWire);
+            gate.connectTo(tapGateWire);
+        }
+        Wire gateSinkWire = new Wire(gate, sink);
+        gate.connectTo(gateSinkWire);
+        sink.connectTo(gateSinkWire);
+
 
         c.addInputGates(taps);
         c.setOutputGate(sink);
@@ -46,20 +52,20 @@ class AndGateTest {
 
     public static Stream<Arguments> givenNInputsShouldAndCorrectly() {
         return Stream.of(
-                Arguments.of(new boolean[]{true})
-//                Arguments.of(new boolean[]{false}),
-//                Arguments.of(new boolean[]{true, true}),
-//                Arguments.of(new boolean[]{false, false}),
-//                Arguments.of(new boolean[]{true, false}),
-//                Arguments.of(new boolean[]{false, true}),
-//                Arguments.of(new boolean[]{true, true, true}),
-//                Arguments.of(new boolean[]{true, true, false}),
-//                Arguments.of(new boolean[]{true, false, true}),
-//                Arguments.of(new boolean[]{true, false, false}),
-//                Arguments.of(new boolean[]{false, true, true}),
-//                Arguments.of(new boolean[]{false, true, false}),
-//                Arguments.of(new boolean[]{false, false, true}),
-//                Arguments.of(new boolean[]{false, false, false})
+                Arguments.of(new boolean[]{true}),
+                Arguments.of(new boolean[]{false}),
+                Arguments.of(new boolean[]{true, true}),
+                Arguments.of(new boolean[]{false, false}),
+                Arguments.of(new boolean[]{true, false}),
+                Arguments.of(new boolean[]{false, true}),
+                Arguments.of(new boolean[]{true, true, true}),
+                Arguments.of(new boolean[]{true, true, false}),
+                Arguments.of(new boolean[]{true, false, true}),
+                Arguments.of(new boolean[]{true, false, false}),
+                Arguments.of(new boolean[]{false, true, true}),
+                Arguments.of(new boolean[]{false, true, false}),
+                Arguments.of(new boolean[]{false, false, true}),
+                Arguments.of(new boolean[]{false, false, false})
         );
     }
 }
