@@ -1,4 +1,4 @@
-package pl.wieczorekp.mim.oop.elections;
+package pl.wieczorekp.mim.oop.auction;
 
 public class Historyk extends UczestnikLicytacji {
     private int favYearLb;

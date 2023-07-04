@@ -1,4 +1,4 @@
-package pl.wieczorekp.mim.oop.elections;
+package pl.wieczorekp.mim.oop.auction;
 
 import java.util.Random;
 
