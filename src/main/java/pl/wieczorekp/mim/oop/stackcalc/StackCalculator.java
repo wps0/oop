@@ -1,12 +1,12 @@
 package pl.wieczorekp.mim.oop.stackcalc;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Optional;
-import java.util.Stack;
+import pl.wieczorekp.mim.oop.stackcalc.exception.IntegerOverflowException;
+import pl.wieczorekp.mim.oop.stackcalc.exception.StackTooSmallException;
+
+import java.util.*;
 
 class StackCalculator {
-    private static final Instruction[] AVAILABLE_INSTRUCTIONS = {
+    public static final Instruction[] SUPPORTED_INSTRUCTIONS = {
             new ParametrizedInstruction<>("PUSH"),
             new Instruction("POP"),
             new Instruction("ADD"),
@@ -15,10 +15,12 @@ class StackCalculator {
             new Instruction("DIV"),
             new Instruction("NEG"),
     };
-    private Stack<Integer> stack;
+    private final Stack<Integer> stack;
+    private final List<Instruction> instructions;
 
-    public StackCalculator() {
+    public StackCalculator(List<Instruction> instructions) {
         this.stack = new Stack<>();
+        this.instructions = instructions;
     }
 
     public void push(int val) {
@@ -40,18 +42,18 @@ class StackCalculator {
 
         ensureDoesNotOverflow(result);
 
-        System.out.printf("ADD a=%d b=%d\n", a, b);
+        System.out.printf("ADD %d + %d\n", a, b);
         push(a + b);
     }
 
     public void sub() throws StackTooSmallException, IntegerOverflowException {
         ensureStackContains(2);
         int a = pop(), b = pop();
-        long result = Long.max(a, b) - Integer.min(a, b);
+        long result = (long) a - b;
 
         ensureDoesNotOverflow(result);
 
-        System.out.printf("SUB a=%d b=%d\n", Integer.max(a, b), Integer.min(a, b));
+        System.out.printf("SUB %d - %d\n", a, b);
         push((int) result);
     }
 
@@ -62,18 +64,19 @@ class StackCalculator {
 
         ensureDoesNotOverflow(result);
 
-        System.out.printf("MUL a=%d b=%d\n", a, b);
+        System.out.printf("MUL %d * %d%n", a, b);
         push((int) result);
     }
 
     public void div() throws ArithmeticException, StackTooSmallException, IntegerOverflowException {
         ensureStackContains(2);
-        int a = pop(), b = pop();
-        long result = Long.max(a, b) / Integer.min(a, b);
+        int a = pop();
+        int b = pop();
+        long result = (long) a / b;
 
         ensureDoesNotOverflow(result);
 
-        System.out.printf("DIV %d / %d\n", Integer.max(a, b), Integer.min(a, b));
+        System.out.printf("DIV %d / %d\n", a, b);
         push((int) result);
     }
 
@@ -87,47 +90,34 @@ class StackCalculator {
         push((int) -top);
     }
 
-    public void executeInstructions(ArrayList<Instruction> instructions) throws StackTooSmallException, IntegerOverflowException {
+    public void execute() throws StackTooSmallException, IntegerOverflowException {
         for (Instruction inst : instructions) {
-            switch (inst.getName().toUpperCase()) {
-                case "PUSH" -> push((Integer) ((ParametrizedInstruction<?>) inst).getParam());
+            switch (inst.name().toUpperCase()) {
+                case "PUSH" -> push(((ParametrizedInstruction<Integer>) inst).param());
                 case "POP" -> pop();
                 case "ADD" -> add();
                 case "SUB" -> sub();
                 case "MUL" -> mul();
                 case "DIV" -> div();
                 case "NEG" -> neg();
-                default -> throw new IllegalArgumentException("Unsupported instruction " + inst.getName());
+                default -> throw new IllegalArgumentException("Unsupported instruction " + inst.name());
             }
         }
     }
 
-    public static ArrayList<Instruction> parseInstructionString(String instructions) {
-        String[] items = instructions.split(" ");
-        ArrayList<Instruction> instructionList = new ArrayList<>();
+    public int peek() {
+        return stack.peek();
+    }
 
-        for (int i = 0; i < items.length; i++) {
-            final int i2 = i;
-            Optional<Instruction> inst = Arrays.stream(AVAILABLE_INSTRUCTIONS)
-                    .filter(s -> s.getName().equalsIgnoreCase(items[i2]))
-                    .findFirst();
+    public void printStack() {
+        List<Integer> listFromStack = new ArrayList<>(stack);
+        Collections.reverse(listFromStack);
 
-            if (inst.isEmpty()) {
-                throw new IllegalArgumentException("Invalid instruction " + items[i]);
-            }
-
-            if (inst.get() instanceof ParametrizedInstruction<?>) {
-                // dla uproszczenia: only int
-                Integer param = Integer.getInteger(items[i+1]);
-                instructionList.add(new ParametrizedInstruction<>(inst.get().getName(), param));
-
-                i++;
-            } else {
-                instructionList.add(new Instruction(items[i]));
-            }
+        Iterator<Integer> it = listFromStack.iterator();
+        int i = 0;
+        while (it.hasNext()) {
+            System.out.printf("%d: %d\n", i++, it.next());
         }
-
-        return instructionList;
     }
 
     private void ensureStackContains(int n) throws StackTooSmallException {
