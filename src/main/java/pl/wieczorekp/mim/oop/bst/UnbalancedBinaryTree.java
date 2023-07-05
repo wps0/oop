@@ -23,7 +23,7 @@ public class UnbalancedBinaryTree<T extends Comparable<T>> extends BinaryTree<T>
     }
 
     @Override
-    public void insert(T x, boolean requireUnique) {
+    public void insert(T x, boolean ignoreNonUnique) {
         if (root == null) {
             this.root = new Node<>(x);
             return;
@@ -39,9 +39,9 @@ public class UnbalancedBinaryTree<T extends Comparable<T>> extends BinaryTree<T>
             } else if (cmp > 0) {
                 next = p.left();
             } else {
-                if (requireUnique)
-                    throw new IllegalArgumentException(x + " already exists in the tree");
-                return;
+                if (ignoreNonUnique)
+                    return;
+                throw new IllegalArgumentException(x + " already exists in the tree");
             }
         }
 
@@ -86,7 +86,7 @@ public class UnbalancedBinaryTree<T extends Comparable<T>> extends BinaryTree<T>
     }
 
     @Override
-    public BinaryTree<T> subtree(Node<T> node) {
+    public UnbalancedBinaryTree<T> subtree(Node<T> node) {
         Node<T> newRoot = new Node<>(node.value());
         newRoot.setLeft(node.left());
         newRoot.setRight(node.right());

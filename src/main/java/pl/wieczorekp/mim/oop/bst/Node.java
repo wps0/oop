@@ -13,6 +13,13 @@ public class Node<T extends Comparable<T>> {
         this.right = null;
     }
 
+    public Node(Node<T> node) {
+        this.value = node.value;
+        this.parent = node.parent;
+        this.left = node.left;
+        this.right = node.right;
+    }
+
     public T value() {
         return value;
     }

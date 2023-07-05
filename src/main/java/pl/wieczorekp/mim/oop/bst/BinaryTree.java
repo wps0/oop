@@ -29,10 +29,10 @@ public abstract class BinaryTree<T extends Comparable<T>> {
     }
 
     public void insert(T x) {
-        insert(x, false);
+        insert(x, true);
     }
 
-    public abstract void insert(T x, boolean requireUnique);
+    public abstract void insert(T x, boolean ignoreNonUnique);
 
     public abstract void delete(T x);
 
