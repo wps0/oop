@@ -45,5 +45,13 @@ public class Node<T extends Comparable<T>> {
         this.right = right;
     }
 
-
+    public void detach() {
+        if (parent != null) {
+            if (parent.left() == this)
+                parent.setLeft(null);
+            else
+                parent.setRight(null);
+            setParent(null);
+        }
+    }
 }
