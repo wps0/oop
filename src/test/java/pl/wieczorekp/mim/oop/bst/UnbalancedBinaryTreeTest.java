@@ -186,7 +186,7 @@ class UnbalancedBinaryTreeTest {
         // then
         assertEquals(expected.size(), actual.size());
         for (int i = 0; i < expectedArr.length; i++) {
-            assertEquals(expectedArr[i], actual.get(i), "Values at index " + i + " does not match");
+            assertEquals(expectedArr[i], actual.get(i), "Values at index " + i + " do not match");
         }
     }
 

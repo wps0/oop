@@ -6,11 +6,11 @@ public class UnbalancedBinaryTree<T extends Comparable<T>> extends BinaryTree<T>
     public UnbalancedBinaryTree() {
     }
 
-    public UnbalancedBinaryTree(Node<T> root) {
+    public UnbalancedBinaryTree(UnbalancedNode<T> root) {
         super(root);
     }
 
-    public void replace(Node<T> inNode, Node<T> node, Node<T> byNode) {
+    public void replace(UnbalancedNode<T> inNode, UnbalancedNode<T> node, UnbalancedNode<T> byNode) {
         if (inNode == null)
             root = byNode;
         else if (inNode.left() == node)
@@ -25,7 +25,7 @@ public class UnbalancedBinaryTree<T extends Comparable<T>> extends BinaryTree<T>
     @Override
     public void insert(T x, boolean ignoreNonUnique) {
         if (root == null) {
-            this.root = new Node<>(x);
+            this.root = new UnbalancedNode<>(x);
             return;
         }
 
@@ -45,7 +45,7 @@ public class UnbalancedBinaryTree<T extends Comparable<T>> extends BinaryTree<T>
             }
         }
 
-        Node<T> xNode = new Node<>(x);
+        UnbalancedNode<T> xNode = new UnbalancedNode<>(x);
         xNode.setParent(p);
         if (p.value().compareTo(x) > 0) {
             p.setLeft(xNode);
@@ -56,7 +56,7 @@ public class UnbalancedBinaryTree<T extends Comparable<T>> extends BinaryTree<T>
 
     @Override
     public void delete(T x) {
-        Node<T> node = search(x);
+        UnbalancedNode<T> node = (UnbalancedNode<T>) search(x);
         if (node == null) {
             throw new NoSuchElementException();
         }
@@ -72,7 +72,7 @@ public class UnbalancedBinaryTree<T extends Comparable<T>> extends BinaryTree<T>
             replace(node.parent(), node, node.left());
         } else {
             BinaryTree<T> rightSubtree = subtree(node.right());
-            Node<T> replacement = rightSubtree.search(rightSubtree.minimum());
+            UnbalancedNode<T> replacement = (UnbalancedNode<T>) rightSubtree.search(rightSubtree.minimum());
 
             if (replacement != node.right()) {
                 replace(replacement.parent(), replacement, replacement.right());
@@ -87,9 +87,13 @@ public class UnbalancedBinaryTree<T extends Comparable<T>> extends BinaryTree<T>
 
     @Override
     public UnbalancedBinaryTree<T> subtree(Node<T> node) {
-        Node<T> newRoot = new Node<>(node.value());
-        newRoot.setLeft(node.left());
-        newRoot.setRight(node.right());
-        return new UnbalancedBinaryTree<>(newRoot);
+        if (node instanceof UnbalancedNode<T> uNode) {
+            UnbalancedNode<T> newRoot = new UnbalancedNode<>(node.value());
+            newRoot.setLeft(uNode.left());
+            newRoot.setRight(uNode.right());
+            return new UnbalancedBinaryTree<>(newRoot);
+        } else {
+            throw new IllegalArgumentException("The only possible node type is UnbalancedNode<T>");
+        }
     }
 }
