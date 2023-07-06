@@ -17,11 +17,11 @@ public class AVLNode<T extends Comparable<T>> extends Node<T> {
     }
 
     public void bfTiltLeft() {
-        bf--;
+        bf++;
     }
     
     public void bfTiltRight() {
-        bf++;
+        bf--;
     }
     
     public boolean needsRebalancing() {
@@ -35,8 +35,7 @@ public class AVLNode<T extends Comparable<T>> extends Node<T> {
 
     @Override
     public void setParent(Node<T> parent) {
-        if (!(parent instanceof AVLNode<T>))
-            throw new IllegalArgumentException("The node must be an instance of AVLNode<T>");
+        checkNodeType(parent);
         this.parent = parent;
     }
 
@@ -47,8 +46,7 @@ public class AVLNode<T extends Comparable<T>> extends Node<T> {
 
     @Override
     public void setLeft(Node<T> left) {
-        if (!(left instanceof AVLNode<T>))
-            throw new IllegalArgumentException("The node must be an instance of AVLNode<T>");
+        checkNodeType(left);
         this.left = left;
     }
 
@@ -57,47 +55,13 @@ public class AVLNode<T extends Comparable<T>> extends Node<T> {
         return (AVLNode<T>) right;
     }
 
-    // This node is the upper node
-//    protected void leftRotate() {
-//        this.left().setParent(this.parent());
-//        this.parent().replaceAppropriate(this, this.left());
-//        this.setParent(left());
-//
-//        AVLNode<T> leftRightNode = this.left().right();
-//        this.setRight(leftRightNode);
-//        leftRightNode.setParent(this);
-//    }
-
-    protected AVLNode<T> leftRotate() {
-        this.parent().replaceAppropriate(this, this.right());
-        this.right().setParent(this.parent());
-        this.setParent(right());
-
-        AVLNode<T> rightLeftNode = this.right().left();
-        this.right().setLeft(this);
-        this.setRight(rightLeftNode);
-        rightLeftNode.setParent(this);
-
-        return this.parent();
-    }
-
-    protected AVLNode<T> rightRotate() {
-        this.parent().replaceAppropriate(this, left());
-        this.left().setParent(this.parent());
-        this.setParent(this.left());
-
-        AVLNode<T> leftRightNode = this.left().right();
-        this.left().setRight(this);
-        this.setLeft(leftRightNode);
-        leftRightNode.setParent(this);
-
-        return this.parent();
-    }
-
-
     public void setRight(Node<T> right) {
-        if (!(right instanceof AVLNode<T>))
-            throw new IllegalArgumentException("The node must be an instance of AVLNode<T>");
+        checkNodeType(right);
         this.right = right;
+    }
+
+    private void checkNodeType(Node<T> node) {
+        if (node != null && !(node instanceof AVLNode<T>))
+            throw new IllegalArgumentException("The node must be an instance of UnbalancedNode<T>");
     }
 }

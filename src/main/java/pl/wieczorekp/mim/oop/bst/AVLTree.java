@@ -47,7 +47,7 @@ public class AVLTree<T extends Comparable<T>> extends BinaryTree<T> {
 
     @Override
     public void delete(T x) {
-
+        return;
     }
 
     @Override
@@ -69,41 +69,84 @@ public class AVLTree<T extends Comparable<T>> extends BinaryTree<T> {
         this.root = node;
     }
 
-    private void rebalance(AVLNode<T> newNode) {
-        AVLNode<T> z = newNode;
-        AVLNode<T> x, n;
-        for (x = z.parent(); x != null; x = z.parent()) {
-            if (z == x.right()) {
-                if (x.bf() > 0) {
-                    AVLNode<T> g = x.parent();
-                    if (z.bf() < 0) {
-                        z.rightRotate();
-                        x.leftRotate();
-                    } else {
-                        x.leftRotate();
-                    }
-                } else {
-                    if (x.bf() < 0) {
-                        x.setBf(0);
-                        break;
-                    }
-                    x.setBf(1);
-                    z = x;
-                }
-            } else {
-                // TODO!
-            }
-        }
-        //            if (newNode.bf() > 0) {
-//                newNode.left().rightRotate();
-//                newNode.leftRotate();
-//            } else {
-//                //?
-//                newNode.right().leftRotate();
-//                newNode.rightRotate();
-//            }
+    protected AVLNode<T> rotateLeft(AVLNode<T> node) {
+        AVLNode<T> y = node.right();
+        AVLNode<T> beta = node.right().left();
 
+        node.setRight(beta);
+        if (beta != null)
+            beta.setParent(node);
+
+        y.setParent(node.parent());
+        if (node.parent() == null)
+            this.setRoot(y);
+        else
+            node.parent().replaceAppropriate(node, y);
+
+        y.setLeft(node);
+        node.setParent(y);
+
+        return y;
     }
 
+    protected AVLNode<T> rotateRight(AVLNode<T> node) {
+        AVLNode<T> y = node.left();
+        AVLNode<T> beta = node.left().right();
+
+        node.setLeft(beta);
+        if (beta != null)
+            beta.setParent(node);
+
+        y.setParent(node.parent());
+        if (node.parent() == null)
+            this.setRoot(y);
+        else
+            node.parent().replaceAppropriate(node, y);
+
+        y.setRight(node);
+        node.setParent(y);
+
+        return y;
+    }
+
+    private void rebalance(AVLNode<T> node) {
+        AVLNode<T> prv = node;
+        node = node.parent();
+        while (node != null) {
+            if (node.needsRebalancing()) {
+                assert prv.bf() == 1 || prv.bf() == -1;
+
+                if (Integer.signum(node.bf()) == Integer.signum(prv.bf())) {
+                    if (prv == node.left())
+                        rotateRight(node);
+                    else
+                        rotateLeft(node);
+                    prv.setBf(0);
+                    node.setBf(0);
+                } else {
+                    if (node.bf() == 2) {
+                        assert prv.bf() == -1;
+                        rotateLeft(prv);
+                        rotateRight(prv.parent());
+
+                        prv.setBf(node.parent().bf() == -1 ? 1 : 0);
+                        node.parent().setBf(node.parent().bf() == 1 ? 1 : 0);
+
+                    } else if (node.bf() == -2){
+                        assert prv.bf() == 1;
+                        rotateRight(prv);
+                        rotateLeft(prv.parent());
+
+                        prv.setBf(node.parent().bf() == 1 ? -1 : 0);
+                        node.parent().setBf(node.parent().bf() == -1 ? -1 : 0);
+                    }
+
+                    node.setBf(0);
+                }
+            }
+            prv = node;
+            node = prv.parent();
+        }
+    }
 
 }
