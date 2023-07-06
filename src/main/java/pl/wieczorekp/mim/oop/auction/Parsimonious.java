@@ -1,20 +1,20 @@
 package pl.wieczorekp.mim.oop.auction;
 
-public class Oszczędny extends UczestnikLicytacji {
+public class Parsimonious extends Client {
     private int sumOfPrices;
     private int proposedItemsCount;
 
-    Oszczędny(int id, String alias, int budget) {
+    Parsimonious(int id, String alias, int budget) {
         super(id, alias, budget);
         sumOfPrices = 0;
         proposedItemsCount = 0;
     }
 
-    public boolean czyKupuje(Przedmiot p) {
+    public boolean wantsToBuy(Item p) {
         proposedItemsCount++;
-        sumOfPrices += p.getCena();
+        sumOfPrices += p.price();
         if (!canAfford(p) || proposedItemsCount == 1)
             return false;
-        return p.getCena() <= sumOfPrices / (float) proposedItemsCount;
+        return p.price() <= sumOfPrices / (float) proposedItemsCount;
     }
 }
