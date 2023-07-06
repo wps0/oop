@@ -1,23 +1,14 @@
 package pl.wieczorekp.mim.oop.bst;
 
-public class Node<T extends Comparable<T>> {
+public abstract class Node<T extends Comparable<T>> {
     private T value;
-    private Node<T> parent;
-    private Node<T> left;
-    private Node<T> right;
+    protected Node<T> parent;
+    protected Node<T> left;
+    protected Node<T> right;
 
-    public Node(T value) {
+
+    protected Node(T value) {
         this.value = value;
-        this.parent = null;
-        this.left = null;
-        this.right = null;
-    }
-
-    public Node(Node<T> node) {
-        this.value = node.value;
-        this.parent = node.parent;
-        this.left = node.left;
-        this.right = node.right;
     }
 
     public T value() {
@@ -28,37 +19,22 @@ public class Node<T extends Comparable<T>> {
         this.value = value;
     }
 
-    public Node<T> parent() {
-        return parent;
-    }
+    public abstract Node<T> parent();
 
-    public void setParent(Node<T> parent) {
-        this.parent = parent;
-    }
+    public abstract void setParent(Node<T> parent);
 
-    public Node<T> left() {
-        return left;
-    }
+    public abstract Node<T> left();
 
-    public void setLeft(Node<T> left) {
-        this.left = left;
-    }
+    public abstract void setLeft(Node<T> node);
 
-    public Node<T> right() {
-        return right;
-    }
+    public abstract Node<T> right();
 
-    public void setRight(Node<T> right) {
-        this.right = right;
-    }
-
-    public void detach() {
-        if (parent != null) {
-            if (parent.left() == this)
-                parent.setLeft(null);
-            else
-                parent.setRight(null);
-            setParent(null);
-        }
+    public abstract void setRight(Node<T> node);
+    
+    protected void replaceAppropriate(Node<T> node, Node<T> byNode) {
+        if (left() == node)
+            setLeft(byNode);
+        else
+            setRight(byNode);
     }
 }
