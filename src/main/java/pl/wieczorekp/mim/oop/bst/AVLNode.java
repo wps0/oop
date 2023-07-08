@@ -1,31 +1,19 @@
 package pl.wieczorekp.mim.oop.bst;
 
 public class AVLNode<T extends Comparable<T>> extends Node<T> {
-    // Balance factor
-    private int bf;
+    private int height;
 
     public AVLNode(T value) {
         super(value);
+        this.height = 1;
     }
 
     public int bf() {
-        return bf;
+        return height(left()) - height(right());
     }
 
-    public void setBf(int bf) {
-        this.bf =  bf;
-    }
-
-    public void bfTiltLeft() {
-        bf++;
-    }
-    
-    public void bfTiltRight() {
-        bf--;
-    }
-    
     public boolean needsRebalancing() {
-        return Math.abs(bf) >= 2;
+        return Math.abs(bf()) >= 2;
     }
 
     @Override
@@ -58,6 +46,28 @@ public class AVLNode<T extends Comparable<T>> extends Node<T> {
     public void setRight(Node<T> right) {
         checkNodeType(right);
         this.right = right;
+    }
+
+    public void detach() {
+        if (parent() != null) {
+            if (parent().left() == this)
+                parent().setLeft(null);
+            else
+                parent().setRight(null);
+            setParent(null);
+        }
+    }
+
+    public int height() {
+        return this.height;
+    }
+
+    public void updateHeight() {
+        this.height = 1 + Integer.max(height(left()), height(right()));
+    }
+
+    private int height(AVLNode<T> node) {
+        return node == null ? 0 : node.height();
     }
 
     private void checkNodeType(Node<T> node) {

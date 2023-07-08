@@ -1,5 +1,7 @@
 package pl.wieczorekp.mim.oop.bst;
 
+import java.util.NoSuchElementException;
+
 public class AVLTree<T extends Comparable<T>> extends BinaryTree<T> {
     public AVLTree() {
         super();
@@ -11,7 +13,7 @@ public class AVLTree<T extends Comparable<T>> extends BinaryTree<T> {
 
     @Override
     public void insert(T x, boolean ignoreNonUnique) {
-        if (root() == null) {
+        if (root == null) {
             setRoot(new AVLNode<>(x));
             return;
         }
@@ -23,10 +25,8 @@ public class AVLTree<T extends Comparable<T>> extends BinaryTree<T> {
             int cmp = next.value().compareTo(x);
             if (cmp < 0) {
                 next = p.right();
-                p.bfTiltRight();
             } else if (cmp > 0) {
                 next = p.left();
-                p.bfTiltLeft();
             } else {
                 if (ignoreNonUnique)
                     return;
@@ -47,7 +47,43 @@ public class AVLTree<T extends Comparable<T>> extends BinaryTree<T> {
 
     @Override
     public void delete(T x) {
-        return;
+        AVLNode<T> node = (AVLNode<T>) search(x);
+        if (node == null) {
+            throw new NoSuchElementException();
+        }
+
+//        AVLNode<T> parent = node.parent();
+        if (node.left() == null && node.right() == null) {
+            node.detach();
+            if (node == root) {
+                root = null;
+            }
+        } else if (node.left() == null) {
+            replace(node.parent(), node, node.right());
+//            rebalance(node.parent());
+        } else if (node.right() == null) {
+            replace(node.parent(), node, node.left());
+//            rebalance(node.parent());
+        } else {
+            BinaryTree<T> rightSubtree = subtree(node.right());
+            AVLNode<T> replacement = (AVLNode<T>) rightSubtree.search(rightSubtree.minimum());
+//            AVLNode<T> replParent = replacement.parent();
+
+            if (replacement != node.right()) {
+                replace(replacement.parent(), replacement, replacement.right());
+                if (replacement.right() != null)
+                    replacement.right().setParent(replacement.parent());
+            }
+            replace(node.parent(), node, replacement);
+            replacement.setLeft(node.left());
+            node.left().setParent(replacement);
+
+//            rebalance(replParent);
+        }
+
+//        if (parent != null) {
+//            rebalance(parent);
+//        }
     }
 
     @Override
@@ -86,6 +122,8 @@ public class AVLTree<T extends Comparable<T>> extends BinaryTree<T> {
         y.setLeft(node);
         node.setParent(y);
 
+        y.updateHeight();
+        node.updateHeight();
         return y;
     }
 
@@ -106,6 +144,8 @@ public class AVLTree<T extends Comparable<T>> extends BinaryTree<T> {
         y.setRight(node);
         node.setParent(y);
 
+        node.updateHeight();
+        y.updateHeight();
         return y;
     }
 
@@ -113,40 +153,44 @@ public class AVLTree<T extends Comparable<T>> extends BinaryTree<T> {
         AVLNode<T> prv = node;
         node = node.parent();
         while (node != null) {
+            node.updateHeight();
+            int bf = node.bf();
             if (node.needsRebalancing()) {
-                assert prv.bf() == 1 || prv.bf() == -1;
-
                 if (Integer.signum(node.bf()) == Integer.signum(prv.bf())) {
-                    if (prv == node.left())
+                    if (bf == 2)
                         rotateRight(node);
-                    else
+                    else if (bf == -2)
                         rotateLeft(node);
-                    prv.setBf(0);
-                    node.setBf(0);
+                    else
+                        assert false;
                 } else {
-                    if (node.bf() == 2) {
-                        assert prv.bf() == -1;
+                    if (bf == 2) {
                         rotateLeft(prv);
                         rotateRight(prv.parent());
-
-                        prv.setBf(node.parent().bf() == -1 ? 1 : 0);
-                        node.parent().setBf(node.parent().bf() == 1 ? 1 : 0);
-
-                    } else if (node.bf() == -2){
-                        assert prv.bf() == 1;
+                    } else if (bf == -2){
                         rotateRight(prv);
                         rotateLeft(prv.parent());
-
-                        prv.setBf(node.parent().bf() == 1 ? -1 : 0);
-                        node.parent().setBf(node.parent().bf() == -1 ? -1 : 0);
+                    } else {
+                        System.out.println(bf);
+                        assert false;
                     }
-
-                    node.setBf(0);
                 }
             }
+            node.updateHeight();
             prv = node;
             node = prv.parent();
         }
     }
 
+    public void replace(Node<T> inNode, Node<T> node, Node<T> byNode) {
+        if (inNode == null)
+            root = byNode;
+        else if (inNode.left() == node)
+            inNode.setLeft(byNode);
+        else if (inNode.right() == node)
+            inNode.setRight(byNode);
+
+        if (byNode != null)
+            byNode.setParent(inNode);
+    }
 }
