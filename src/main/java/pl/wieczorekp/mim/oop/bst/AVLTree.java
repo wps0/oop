@@ -122,8 +122,8 @@ public class AVLTree<T extends Comparable<T>> extends BinaryTree<T> {
         y.setLeft(node);
         node.setParent(y);
 
-        y.updateHeight();
         node.updateHeight();
+        y.updateHeight();
         return y;
     }
 
@@ -166,10 +166,10 @@ public class AVLTree<T extends Comparable<T>> extends BinaryTree<T> {
                 } else {
                     if (bf == 2) {
                         rotateLeft(prv);
-                        rotateRight(prv.parent());
+                        rotateRight(node);
                     } else if (bf == -2){
                         rotateRight(prv);
-                        rotateLeft(prv.parent());
+                        rotateLeft(node);
                     } else {
                         System.out.println(bf);
                         assert false;

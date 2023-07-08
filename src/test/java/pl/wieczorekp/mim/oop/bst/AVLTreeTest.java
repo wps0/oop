@@ -13,8 +13,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class AVLTreeTest {
     private static final long SEED = 12186469L;
-    private static final int RNG_MIN_VALUE = -100;
-    private static final int RNG_MAX_VALUE = 100;
+    private static final int RNG_MIN_VALUE = -10_000_000;
+    private static final int RNG_MAX_VALUE = 10_000_000;
     private static Random rng;
     AVLTree<String> fullBinaryTree;
     AVLNode<String> root, rootLeftChild, rootRightChild, alpha, beta, gamma, delta;
@@ -104,14 +104,10 @@ class AVLTreeTest {
         }
     }
 
-//    @ParameterizedTest
-//    @ValueSource(ints = {10, 100, /*1_000, 10_000, 100_000, 1_000_000*/})
-//    @Timeout(value = 3, threadMode = Timeout.ThreadMode.SEPARATE_THREAD)
-//void givenASetOfRandomIntegersShouldRandomSearchThemInLogNTime() {
-public static void main(String[] args) {
-        init();
-        int n = 10;
-        for (int k = 0; k < 100; k++) {
+    @ParameterizedTest
+    @ValueSource(ints = {10, 100, 1_000, 10_000, 100_000, 1_000_000})
+    @Timeout(value = 3, threadMode = Timeout.ThreadMode.SEPARATE_THREAD)
+void givenASetOfRandomIntegersShouldRandomSearchThemInLogNTime(int n) {
         // given
         AVLTree<Integer> tree = new AVLTree<>();
         SortedSet<Integer> values = new TreeSet<>();
@@ -133,8 +129,6 @@ public static void main(String[] args) {
             assertEquals(min, tree.minimum(), "Mismatch at index " + i);
             tree.delete(min);
             values.remove(min);
-        }
-
         }
     }
 }
