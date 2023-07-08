@@ -2,6 +2,7 @@ package pl.wieczorekp.mim.oop.bst;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -12,6 +13,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 class UnbalancedBinaryTreeTest {
+    private static final int RNG_MIN_VALUE = -100_000;
+    private static final int RNG_MAX_VALUE = 100_000;
     private static long SEED = 6921749823580L;
     private Random rng;
 
@@ -190,4 +193,36 @@ class UnbalancedBinaryTreeTest {
         }
     }
 
+    @ParameterizedTest
+    @ValueSource(ints = {5, 10, 100, 1_000, 5_000, 10_000, 100_000})
+    @Timeout(value = 5, threadMode = Timeout.ThreadMode.SEPARATE_THREAD)
+    void givenASetOfRandomIntegersShouldInsertAndDeleteThemRandomly(int n) {
+        // given
+        UnbalancedBinaryTree<Integer> tree = new UnbalancedBinaryTree<>();
+        SortedSet<Integer> values = new TreeSet<>();
+        while (values.size() < n) {
+            values.add(rng.nextInt(RNG_MIN_VALUE, RNG_MAX_VALUE+1));
+        }
+
+        ArrayList<Integer> valArray = new ArrayList<>(values);
+        Collections.shuffle(valArray, rng);
+
+        // when
+        for (int i = 0; i < n; i++) {
+            tree.insert(valArray.get(i));
+        }
+
+        // then
+        Collections.shuffle(valArray, rng);
+
+        for (int i = 0; i < n; i++) {
+            int min = values.first();
+            int max = values.last();
+
+            assertEquals(min, tree.minimum(), "Minimum mismatch at index " + i);
+            assertEquals(max, tree.maximum(), "Maximum mismatch at index " + i);
+            tree.delete(valArray.get(i));
+            values.remove(valArray.get(i));
+        }
+    }
 }

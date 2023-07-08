@@ -36,6 +36,8 @@ public abstract class BinaryTree<T extends Comparable<T>> {
 
     public abstract void delete(T x);
 
+    public abstract BinaryTree<T> subtree(Node<T> node);
+
     public T minimum() {
         if (root == null) {
             return null;
@@ -85,9 +87,25 @@ public abstract class BinaryTree<T extends Comparable<T>> {
         return node != null ? node.value() : null;
     }
 
+    public Node<T> root() {
+        return root;
+    }
+
+    public abstract void setRoot(Node<T> node);
+
     public boolean isEmpty() {
         return root == null;
     }
 
-    public abstract BinaryTree<T> subtree(Node<T> node);
+    protected void replace(Node<T> inNode, Node<T> node, Node<T> byNode) {
+        if (inNode == null)
+            root = byNode;
+        else if (inNode.left() == node)
+            inNode.setLeft(byNode);
+        else if (inNode.right() == node)
+            inNode.setRight(byNode);
+
+        if (byNode != null)
+            byNode.setParent(inNode);
+    }
 }

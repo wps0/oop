@@ -1,5 +1,8 @@
 package pl.wieczorekp.mim.oop.bst;
 
+import lombok.SneakyThrows;
+
+import javax.naming.OperationNotSupportedException;
 import java.util.NoSuchElementException;
 
 public class UnbalancedBinaryTree<T extends Comparable<T>> extends BinaryTree<T> {
@@ -8,18 +11,6 @@ public class UnbalancedBinaryTree<T extends Comparable<T>> extends BinaryTree<T>
 
     public UnbalancedBinaryTree(UnbalancedNode<T> root) {
         super(root);
-    }
-
-    public void replace(UnbalancedNode<T> inNode, UnbalancedNode<T> node, UnbalancedNode<T> byNode) {
-        if (inNode == null)
-            root = byNode;
-        else if (inNode.left() == node)
-            inNode.setLeft(byNode);
-        else if (inNode.right() == node)
-            inNode.setRight(byNode);
-
-        if (byNode != null)
-            byNode.setParent(inNode);
     }
 
     @Override
@@ -74,10 +65,10 @@ public class UnbalancedBinaryTree<T extends Comparable<T>> extends BinaryTree<T>
             BinaryTree<T> rightSubtree = subtree(node.right());
             UnbalancedNode<T> replacement = (UnbalancedNode<T>) rightSubtree.search(rightSubtree.minimum());
 
-            if (replacement != node.right()) {
+            if (replacement.value() != node.right().value()) {
                 replace(replacement.parent(), replacement, replacement.right());
-                if (replacement.right() != null)
-                    replacement.right().setParent(replacement.parent());
+                replacement.setRight(node.right());
+                node.right().setParent(replacement);
             }
             replace(node.parent(), node, replacement);
             replacement.setLeft(node.left());
@@ -88,12 +79,31 @@ public class UnbalancedBinaryTree<T extends Comparable<T>> extends BinaryTree<T>
     @Override
     public UnbalancedBinaryTree<T> subtree(Node<T> node) {
         if (node instanceof UnbalancedNode<T> uNode) {
-            UnbalancedNode<T> newRoot = new UnbalancedNode<>(node.value());
-            newRoot.setLeft(uNode.left());
-            newRoot.setRight(uNode.right());
-            return new UnbalancedBinaryTree<>(newRoot);
+            UnbalancedBinaryTree<T> roTree = new UnbalancedBinaryTree<>() {
+                @SneakyThrows
+                @Override
+                public void insert(T x, boolean ignoreNonUnique) {
+                    throw new OperationNotSupportedException("The tree is read-only");
+                }
+
+                @SneakyThrows
+                @Override
+                public void delete(T x) {
+                    throw new OperationNotSupportedException("The tree is read-only");
+                }
+            };
+            roTree.setRoot(uNode);
+
+            return roTree;
         } else {
             throw new IllegalArgumentException("The only possible node type is UnbalancedNode<T>");
         }
+    }
+
+    @Override
+    public void setRoot(Node<T> node) {
+        if (!(node instanceof UnbalancedNode<T>))
+            throw new IllegalArgumentException("The node must be an instance of AVLNode<T>");
+        this.root = node;
     }
 }
