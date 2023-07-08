@@ -2,6 +2,7 @@ package pl.wieczorekp.mim.oop.stackcalc;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import pl.wieczorekp.mim.oop.stackcalc.exception.InvalidParameterException;
 
 import java.util.List;
 
@@ -14,7 +15,7 @@ class StackMachineTest {
             "pUsH 3 PuSh 10\nadd",
             "push\n3 PUSH 10\nadd"
     })
-    void parseInstructionString_givenSampleInstructionStringShouldParseItCorrectly(String seq) {
+    void parseInstructionString_givenSampleInstructionStringShouldParseItCorrectly(String seq) throws InvalidParameterException {
         // when
         List<Instruction> instructions = StackMachine.parseInstructionString(seq);
 
