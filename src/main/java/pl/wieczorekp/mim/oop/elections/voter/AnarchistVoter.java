@@ -1,4 +1,6 @@
-package pl.wieczorekp.mim.oop.elections;
+package pl.wieczorekp.mim.oop.elections.voter;
+
+import pl.wieczorekp.mim.oop.elections.Candidate;
 
 import java.util.Collection;
 import java.util.Optional;

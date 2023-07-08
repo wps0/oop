@@ -1,5 +1,7 @@
 package pl.wieczorekp.mim.oop.elections;
 
+import pl.wieczorekp.mim.oop.elections.voter.*;
+
 import java.util.*;
 
 public class Main {
