@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class OrGateTest {
     @ParameterizedTest
-    @MethodSource("pl.wieczorekp.mim.oop.lab9.gates.GateTestUtils#primitiveBooleanArgumentSource")
+    @MethodSource("pl.wieczorekp.mim.oop.circuit.gates.GateTestUtils#primitiveBooleanArgumentSource")
     void givenNInputsShouldOrCorrectly(boolean[] inputs) {
         // given
         Boolean[] nonPrimitiveInputs = new Boolean[inputs.length];

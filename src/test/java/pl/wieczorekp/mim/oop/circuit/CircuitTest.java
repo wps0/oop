@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CircuitTest {
     @ParameterizedTest
-    @MethodSource("pl.wieczorekp.mim.oop.lab9.gates.GateTestUtils#primitive3BooleanArgumentSource")
+    @MethodSource("pl.wieczorekp.mim.oop.circuit.gates.GateTestUtils#primitive3BooleanArgumentSource")
     void givenSampleCircuitShouldEvaluateToCorrectValues(boolean[] inputs) {
         // given
         Circuit sampleCircuit = CircuitBuilder.buildSampleCircuit();

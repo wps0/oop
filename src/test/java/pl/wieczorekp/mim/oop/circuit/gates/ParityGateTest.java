@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ParityGateTest {
     @ParameterizedTest
-    @MethodSource("pl.wieczorekp.mim.oop.lab9.gates.GateTestUtils#primitiveBooleanArgumentSource")
+    @MethodSource("pl.wieczorekp.mim.oop.circuit.gates.GateTestUtils#primitiveBooleanArgumentSource")
     void givenNInputsShouldXorCorrectly(boolean[] inputs) {
         // given
         Boolean[] nonPrimitiveInputs = new Boolean[inputs.length];

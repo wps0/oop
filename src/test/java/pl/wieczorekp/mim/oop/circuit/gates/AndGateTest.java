@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class AndGateTest {
 
     @ParameterizedTest
-    @MethodSource("pl.wieczorekp.mim.oop.lab9.gates.GateTestUtils#primitiveBooleanArgumentSource")
+    @MethodSource("pl.wieczorekp.mim.oop.circuit.gates.GateTestUtils#primitiveBooleanArgumentSource")
     void givenNInputsShouldAndCorrectly(boolean[] inputs) {
         // given
         Boolean[] nonPrimitiveInputs = new Boolean[inputs.length];
