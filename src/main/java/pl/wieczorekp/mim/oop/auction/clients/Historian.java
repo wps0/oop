@@ -1,5 +1,8 @@
-package pl.wieczorekp.mim.oop.auction;
+package pl.wieczorekp.mim.oop.auction.clients;
 
+import pl.wieczorekp.mim.oop.auction.Item;
+
+// Historyk
 public class Historian extends Client {
     private int favYearLb;
     private int favYearUb;
@@ -11,8 +14,14 @@ public class Historian extends Client {
     }
 
     public boolean wantsToBuy(Item p) {
-        if (!canAfford(p))
-            return false;
         return favYearLb <= p.year() && p.year() <= favYearUb;
+    }
+
+    @Override
+    public String toString() {
+        return "Historian{" + super.toString() +
+                ", favYearLb=" + favYearLb +
+                ", favYearUb=" + favYearUb +
+                '}';
     }
 }

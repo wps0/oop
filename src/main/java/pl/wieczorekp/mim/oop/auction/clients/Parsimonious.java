@@ -1,5 +1,8 @@
-package pl.wieczorekp.mim.oop.auction;
+package pl.wieczorekp.mim.oop.auction.clients;
 
+import pl.wieczorekp.mim.oop.auction.Item;
+
+// Oszczędny
 public class Parsimonious extends Client {
     private int sumOfPrices;
     private int proposedItemsCount;
@@ -13,8 +16,16 @@ public class Parsimonious extends Client {
     public boolean wantsToBuy(Item p) {
         proposedItemsCount++;
         sumOfPrices += p.price();
-        if (!canAfford(p) || proposedItemsCount == 1)
+        if (proposedItemsCount == 1)
             return false;
         return p.price() <= sumOfPrices / (float) proposedItemsCount;
+    }
+
+    @Override
+    public String toString() {
+        return "Parsimonious{" + super.toString() +
+                ", sumOfPrices=" + sumOfPrices +
+                ", proposedItemsCount=" + proposedItemsCount +
+                '}';
     }
 }

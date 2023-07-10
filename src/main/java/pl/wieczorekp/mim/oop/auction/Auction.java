@@ -1,5 +1,7 @@
 package pl.wieczorekp.mim.oop.auction;
 
+import pl.wieczorekp.mim.oop.auction.clients.Client;
+
 import java.util.List;
 
 public class Auction {

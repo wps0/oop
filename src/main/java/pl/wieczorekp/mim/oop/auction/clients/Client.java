@@ -1,4 +1,6 @@
-package pl.wieczorekp.mim.oop.auction;
+package pl.wieczorekp.mim.oop.auction.clients;
+
+import pl.wieczorekp.mim.oop.auction.Item;
 
 public abstract class Client {
     private int id;
@@ -31,5 +33,14 @@ public abstract class Client {
 
     public boolean canAfford(Item p) {
         return p.price() <= budget;
+    }
+
+    @Override
+    public String toString() {
+        return "Client{" +
+                "id=" + id +
+                ", nick='" + nick + '\'' +
+                ", budget=" + budget +
+                '}';
     }
 }

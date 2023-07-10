@@ -1,5 +1,8 @@
-package pl.wieczorekp.mim.oop.auction;
+package pl.wieczorekp.mim.oop.auction.clients;
 
+import pl.wieczorekp.mim.oop.auction.Item;
+
+// Sentymentalny
 public class SentimentalClient extends Client {
     private final String origin;
 
@@ -9,9 +12,13 @@ public class SentimentalClient extends Client {
     }
 
     public boolean wantsToBuy(Item p) {
-        if (!canAfford(p)) {
-            return false;
-        }
         return p.countryOfOrigin().equalsIgnoreCase(origin);
+    }
+
+    @Override
+    public String toString() {
+        return "SentimentalClient{" + super.toString() +
+                ", origin='" + origin + '\'' +
+                '}';
     }
 }
