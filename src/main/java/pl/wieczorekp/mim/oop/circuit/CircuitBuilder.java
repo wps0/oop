@@ -42,10 +42,6 @@ public class CircuitBuilder<T> {
         return this;
     }
 
-    public CircuitBuilder<T> addGate(Gate gate) {
-        throw new UnsupportedOperationException();
-    }
-
     public CircuitBuilder<T> addWire(T from, T to) {
         Gate src = mnemonics.get(from);
         Gate dst = mnemonics.get(to);
@@ -71,9 +67,9 @@ public class CircuitBuilder<T> {
     }
 
     //
-    // in1 -- and1
+    // in1 -- or1
     // in2 -/      \
-    // in3 ------- or1 -- not1 -- end
+    // in3 ------- and1 -- not1 -- end
     //
     public static Circuit buildSampleCircuit() {
         return new CircuitBuilder<String>()
@@ -89,6 +85,51 @@ public class CircuitBuilder<T> {
                 .addGate("not1", new NotGate())
                 .addWire("and1", "not1")
                 .setTerminatingGate("not1")
+                .build();
+    }
+
+    //
+    // in1 -- xor
+    // in2 -/      \
+    // in3 ------- and1 -- not1 -- end
+    //
+    public static Circuit buildSampleXorCircuit() {
+        return new CircuitBuilder<String>()
+                .addInputGate("in1")
+                .addInputGate("in2")
+                .addInputGate("in3")
+                .addGate("xor1", new ParityGate())
+                .addWire("in1", "xor1")
+                .addWire("in2", "xor1")
+                .addGate("and1", new AndGate())
+                .addWire("in3", "and1")
+                .addWire("or1", "and1")
+                .setTerminatingGate("and1")
+                .build();
+    }
+
+    //
+    // in1 -- xor1        majority -- end
+    // in2 -/----==\==----^   /
+    // in3 ------- or1 -- and1
+    //
+    public static Circuit buildSampleMajorityCircuit() {
+        return new CircuitBuilder<String>()
+                .addInputGate("in1")
+                .addInputGate("in2")
+                .addInputGate("in3")
+                .addGate("xor1", new ParityGate())
+                .addWire("in1", "xor1")
+                .addWire("in2", "xor1")
+                .addGate("or1", new OrGate())
+                .addWire("in3", "or1")
+                .addWire("xor1", "or1")
+                .addGate("and1", new AndGate())
+                .addWire("or1", "and1")
+                .addGate("majority", new MajorityGate())
+                .addWire("in2", "majority")
+                .addWire("and1", "majority")
+                .setTerminatingGate("majority")
                 .build();
     }
 }
