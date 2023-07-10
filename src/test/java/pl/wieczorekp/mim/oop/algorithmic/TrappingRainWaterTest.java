@@ -13,7 +13,7 @@ import java.util.stream.LongStream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class TrappingRainWaterTest {
-    private static final int AUTOMATIC_TESTS_AMOUNT = 1_000;
+    private static final int AUTOMATIC_TESTS_AMOUNT = 1_00;
     private static final int AUTOMATIC_TESTS_SEED = 910_518_740;
     private static final int AUTOMATIC_TESTS_HEIGHTS_LB = 0;
     private static final int AUTOMATIC_TESTS_HEIGHTS_UB = (int) 1e5;

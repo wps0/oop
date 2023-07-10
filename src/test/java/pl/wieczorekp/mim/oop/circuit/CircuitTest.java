@@ -31,7 +31,7 @@ class CircuitTest {
     void givenSampleXorCircuitShouldEvaluateToCorrectValues(boolean[] inputs) {
         // given
         Circuit sampleCircuit = CircuitBuilder.buildSampleXorCircuit();
-        boolean expected = (inputs[0] ^ inputs[1]) | inputs[2];
+        boolean expected = (inputs[0] ^ inputs[1]) & inputs[2];
 
         // when
         boolean actualValue = sampleCircuit.evaluate(inputs);
@@ -41,9 +41,9 @@ class CircuitTest {
 
         // then
         assertEquals(expected, actualValue);
-        assertEquals(3, actualDepth);
+        assertEquals(2, actualDepth);
         assertEquals(3, actualLength);
-        assertEquals(7, actualSize);
+        assertEquals(6, actualSize);
     }
 
     @ParameterizedTest

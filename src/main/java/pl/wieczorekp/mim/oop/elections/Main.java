@@ -20,7 +20,7 @@ public class Main {
         voters.add(new BoredVoter("B2"));
         voters.add(new StudentVoter("S1"));
         voters.add(new FeministVoter("F1"));
-        voters.addAll(generateVoters(8000000, parties));
+        voters.addAll(generateVoters(50000, parties));
 
         List<Candidate> candidates = new ArrayList<>();
         candidates.add(new Candidate("Andrzej Sebastian", "DUDA", Candidate.Sex.MALE, Optional.of(parties.get(0))));
@@ -49,9 +49,9 @@ public class Main {
         List<Voter> voters = new ArrayList<>(amount);
 
         while (amount-- > 0) {
-            switch (rng.nextInt(7)) {
-                case 0 -> voters.add(new StudentVoter("S" + amount));
-                case 1 -> voters.add(new AnarchistVoter("A" + amount));
+            switch (rng.nextInt(9)) {
+                case 0, 7 -> voters.add(new StudentVoter("S" + amount));
+                case 1, 8 -> voters.add(new AnarchistVoter("A" + amount));
                 case 2 -> voters.add(new FeministVoter("F" + amount));
                 case 3 -> voters.add(new BoredVoter("B" + amount));
                 case 4, 5, 6 -> voters.add(new PartyVoter("P" + amount, parties.get(rng.nextInt(parties.size()))));

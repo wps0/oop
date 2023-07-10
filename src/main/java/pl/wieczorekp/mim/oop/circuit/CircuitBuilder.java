@@ -91,7 +91,7 @@ public class CircuitBuilder<T> {
     //
     // in1 -- xor
     // in2 -/      \
-    // in3 ------- and1 -- not1 -- end
+    // in3 ------- and1 -- end
     //
     public static Circuit buildSampleXorCircuit() {
         return new CircuitBuilder<String>()
@@ -103,7 +103,7 @@ public class CircuitBuilder<T> {
                 .addWire("in2", "xor1")
                 .addGate("and1", new AndGate())
                 .addWire("in3", "and1")
-                .addWire("or1", "and1")
+                .addWire("xor1", "and1")
                 .setTerminatingGate("and1")
                 .build();
     }
