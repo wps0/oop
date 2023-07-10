@@ -42,9 +42,9 @@ public class StackMachine {
 
             if (inst.get() instanceof ParametrizedInstruction<?>) {
                 // dla uproszczenia: only int
-                Integer param = null;
+                int param;
                 try {
-                    param = Integer.valueOf(items[i+1]);
+                    param = Integer.parseInt(items[i + 1]);
                 } catch (NumberFormatException e) {
                     throw new InvalidParameterException("The parameter must be an integer");
                 }

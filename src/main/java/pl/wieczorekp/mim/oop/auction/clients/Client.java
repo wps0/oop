@@ -3,7 +3,7 @@ package pl.wieczorekp.mim.oop.auction.clients;
 import pl.wieczorekp.mim.oop.auction.Item;
 
 public abstract class Client {
-    private int id;
+    private final int id;
     private String nick;
     private int budget;
 

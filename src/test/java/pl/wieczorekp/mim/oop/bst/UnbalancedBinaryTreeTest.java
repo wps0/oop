@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 class UnbalancedBinaryTreeTest {
     private static final int RNG_MIN_VALUE = -100_000;
     private static final int RNG_MAX_VALUE = 100_000;
-    private static long SEED = 6921749823580L;
+    private static final long SEED = 6921749823580L;
     private Random rng;
 
     @BeforeEach

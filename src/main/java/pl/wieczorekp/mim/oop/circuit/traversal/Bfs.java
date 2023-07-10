@@ -1,5 +1,7 @@
-package pl.wieczorekp.mim.oop.circuit;
+package pl.wieczorekp.mim.oop.circuit.traversal;
 
+import pl.wieczorekp.mim.oop.circuit.Circuit;
+import pl.wieczorekp.mim.oop.circuit.Pair;
 import pl.wieczorekp.mim.oop.circuit.gates.Gate;
 import pl.wieczorekp.mim.oop.circuit.gates.Wire;
 

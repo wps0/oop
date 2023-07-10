@@ -4,8 +4,8 @@ import pl.wieczorekp.mim.oop.auction.Item;
 
 // Historyk
 public class Historian extends Client {
-    private int favYearLb;
-    private int favYearUb;
+    private final int favYearLb;
+    private final int favYearUb;
 
     Historian(int id, String alias, int budget, int favYearLb, int favYearUb) {
         super(id, alias, budget);

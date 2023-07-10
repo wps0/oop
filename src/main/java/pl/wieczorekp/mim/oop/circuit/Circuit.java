@@ -3,6 +3,9 @@ package pl.wieczorekp.mim.oop.circuit;
 import pl.wieczorekp.mim.oop.circuit.gates.SignalEmittingGate;
 import pl.wieczorekp.mim.oop.circuit.gates.Gate;
 import pl.wieczorekp.mim.oop.circuit.gates.TerminatingGate;
+import pl.wieczorekp.mim.oop.circuit.traversal.DepthBfs;
+import pl.wieczorekp.mim.oop.circuit.traversal.ResetBfs;
+import pl.wieczorekp.mim.oop.circuit.traversal.SizeBfs;
 
 import java.util.ArrayList;
 import java.util.Collection;

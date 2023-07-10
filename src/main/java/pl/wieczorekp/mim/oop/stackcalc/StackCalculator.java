@@ -15,11 +15,11 @@ class StackCalculator {
             new Instruction("DIV"),
             new Instruction("NEG"),
     };
-    private final Stack<Integer> stack;
+    private final Deque<Integer> stack;
     private final List<Instruction> instructions;
 
     public StackCalculator(List<Instruction> instructions) {
-        this.stack = new Stack<>();
+        this.stack = new ArrayDeque<>();
         this.instructions = instructions;
     }
 
