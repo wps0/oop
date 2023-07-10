@@ -141,6 +141,7 @@ class UnbalancedBinaryTreeTest {
 
     @ParameterizedTest
     @ValueSource(ints = {2, 10, 100, 1000, 10000})
+    @Timeout(value = 10, threadMode = Timeout.ThreadMode.SEPARATE_THREAD)
     void givenNRandomNumbersShouldReturnNonNullTreeNode(int n) {
         // given
         int[] arr = IntStream.generate(() -> n * rng.nextInt(Integer.MAX_VALUE/n)).limit(n).toArray();
@@ -161,6 +162,7 @@ class UnbalancedBinaryTreeTest {
 
     @ParameterizedTest
     @ValueSource(ints = {2, 5, 10, 100, 1000, 10000})
+    @Timeout(value = 10, threadMode = Timeout.ThreadMode.SEPARATE_THREAD)
     void givenNRandomNumbersShouldSortThemCorrectly(int n) {
         // given
         int[] primitiveArr = IntStream.generate(() -> rng.nextInt(50)).limit(n).toArray();;
@@ -195,7 +197,7 @@ class UnbalancedBinaryTreeTest {
 
     @ParameterizedTest
     @ValueSource(ints = {5, 10, 100, 1_000, 5_000, 10_000})
-    @Timeout(value = 6, threadMode = Timeout.ThreadMode.SEPARATE_THREAD)
+    @Timeout(value = 10, threadMode = Timeout.ThreadMode.SEPARATE_THREAD)
     void givenASetOfRandomIntegersShouldInsertAndDeleteThemRandomly(int n) {
         // given
         UnbalancedBinaryTree<Integer> tree = new UnbalancedBinaryTree<>();

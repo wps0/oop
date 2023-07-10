@@ -162,6 +162,7 @@ public class AVLTree<T extends Comparable<T>> extends BinaryTree<T> {
         while (node != null) {
             node.updateHeight();
             int bf = node.bf();
+
             if (node.needsRebalancing()) {
                 if (prv == null || Integer.signum(prv.bf()) == 0 || Integer.signum(node.bf()) == Integer.signum(prv.bf())) {
                     if (bf == 2)
@@ -172,7 +173,6 @@ public class AVLTree<T extends Comparable<T>> extends BinaryTree<T> {
                         assert false;
 
                     node.updateHeight();
-                    node.parent().updateHeight();
                 } else {
                     if (bf == 2) {
                         rotateLeft(prv);
@@ -181,14 +181,13 @@ public class AVLTree<T extends Comparable<T>> extends BinaryTree<T> {
                         rotateRight(prv);
                         rotateLeft(node);
                     } else {
-                        System.out.println(bf);
                         assert false;
                     }
 
                     node.parent().left().updateHeight();
                     node.parent().right().updateHeight();
-                    node.parent().updateHeight();
                 }
+                node.parent().updateHeight();
             }
             prv = node;
             node = prv.parent();

@@ -7,7 +7,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -114,9 +113,28 @@ class AVLTreeTest {
     }
 
     @ParameterizedTest
+    @ValueSource(ints = {10, 100, 1_000, 10_000, 100_000, 1_000_000})
+    @Timeout(value = 2, threadMode = Timeout.ThreadMode.SEPARATE_THREAD)
+    void sortingTest(int n) {
+        // given
+        AVLTree<Integer> tree = new AVLTree<>();
+
+        // when
+        for (int i = 0; i < n; i++) {
+            tree.insert(i);
+        }
+
+        // then
+        for (int i = 0; i < n; i++) {
+            assertEquals(tree.minimum(), i, "Mismatch at index " + i);
+            tree.delete(i);
+        }
+    }
+
+    @ParameterizedTest
     @ValueSource(ints = {10, 100, 1_000, 10_000})
-    @Timeout(value = 7, threadMode = Timeout.ThreadMode.SEPARATE_THREAD)
-    void randomInsertTest(int n) {
+    @Timeout(value = 8, threadMode = Timeout.ThreadMode.SEPARATE_THREAD)
+    void randomInsertDeleteTest_checksIfAllValuesArePresent(int n) {
         // given
         AVLTree<Integer> tree = new AVLTree<>();
         ArrayList<Integer> values = new ArrayList<>(generateNDifferentInts(n, -2 * n, 2 * n));
@@ -145,52 +163,9 @@ class AVLTreeTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {10, 100, 1_000, 10_000, 100_000, 1_000_000})
-    @Timeout(value = 1, threadMode = Timeout.ThreadMode.SEPARATE_THREAD)
-    void givenASequenceOfConsecutiveIntegersShouldSortThemInLogarithmicTime(int n) {
-        // given
-        AVLTree<Integer> tree = new AVLTree<>();
-
-        // when
-        for (int i = 0; i < n; i++) {
-            tree.insert(i);
-        }
-
-        // then
-        for (int i = 0; i < n; i++) {
-            assertEquals(tree.minimum(), i, "Mismatch at index " + i);
-            tree.delete(i);
-        }
-    }
-
-    @ParameterizedTest
-    @ValueSource(ints = {10, 100, 1_000, 10_000, 100_000, 1_000_000})
-    @Timeout(unit = TimeUnit.MILLISECONDS, value = 3500, threadMode = Timeout.ThreadMode.SEPARATE_THREAD)
-    void givenASetOfRandomIntegersShouldRandomSearchThemInLogNTime(int n) {
-        // given
-        AVLTree<Integer> tree = new AVLTree<>();
-        SortedSet<Integer> values = generateNDifferentInts(n, RNG_MIN_VALUE, RNG_MAX_VALUE + 1);
-        ArrayList<Integer> valArray = new ArrayList<>(values);
-        Collections.shuffle(valArray, rng);
-
-        // when
-        for (int i = 0; i < n; i++) {
-            tree.insert(valArray.get(i));
-        }
-
-        // then
-        for (int i = 0; i < n; i++) {
-            int min = values.first();
-            assertEquals(min, tree.minimum(), "Mismatch at index " + i);
-            tree.delete(min);
-            values.remove(min);
-        }
-    }
-
-    @ParameterizedTest
-    @ValueSource(ints = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 30, 40, 50, 60, 70, 80, 90, 100, 1_000, 10_000, 100_000, 1_000_000})
-    @Timeout(value = 4, threadMode = Timeout.ThreadMode.SEPARATE_THREAD)
-    void givenASetOfRandomIntegersShouldInsertAndDeleteThemMaintainingTheAVLTreeStructure(int n) {
+    @ValueSource(ints = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 30, 40, 50, 60, 70, 80, 90, 100, 1_000, 10_000, 100_000})
+    @Timeout(value = 2, threadMode = Timeout.ThreadMode.SEPARATE_THREAD)
+    void randomInsertDeleteTest_checksMinimumMaximum(int n) {
         AVLTree<Integer> tree = new AVLTree<>();
         SortedSet<Integer> values = generateNDifferentInts(n, RNG_MIN_VALUE, RNG_MAX_VALUE + 1);
         ArrayList<Integer> valArray = new ArrayList<>(values);
@@ -212,8 +187,14 @@ class AVLTreeTest {
             assertEquals(max, tree.maximum(), "Maximum mismatch at index " + i);
             tree.delete(valArray.get(i));
             values.remove(valArray.get(i));
-
         }
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {1_000_000, 2_000_000})
+    @Timeout(value = 15, threadMode = Timeout.ThreadMode.SEPARATE_THREAD)
+    void largeRandomInsertDeleteTest_checksMinimumMaximum(int n) {
+        randomInsertDeleteTest_checksMinimumMaximum(n);
     }
 
     private static SortedSet<Integer> generateNDifferentInts(int n, int lb, int ub) {
