@@ -106,6 +106,8 @@ class StackCalculator {
     }
 
     public int peek() {
+        if (stack.isEmpty())
+            throw new EmptyStackException();
         return stack.peek();
     }
 

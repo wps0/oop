@@ -7,7 +7,7 @@ public class Parsimonious extends Client {
     private int sumOfPrices;
     private int proposedItemsCount;
 
-    Parsimonious(int id, String alias, int budget) {
+    public Parsimonious(int id, String alias, int budget) {
         super(id, alias, budget);
         sumOfPrices = 0;
         proposedItemsCount = 0;

@@ -7,7 +7,7 @@ public class Historian extends Client {
     private final int favYearLb;
     private final int favYearUb;
 
-    Historian(int id, String alias, int budget, int favYearLb, int favYearUb) {
+    public Historian(int id, String alias, int budget, int favYearLb, int favYearUb) {
         super(id, alias, budget);
         this.favYearLb = favYearLb;
         this.favYearUb = favYearUb;

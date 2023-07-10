@@ -2,7 +2,6 @@ package pl.wieczorekp.mim.oop.bst;
 
 import lombok.SneakyThrows;
 
-import javax.naming.OperationNotSupportedException;
 import java.util.NoSuchElementException;
 
 public class AVLTree<T extends Comparable<T>> extends BinaryTree<T> {
@@ -86,13 +85,13 @@ public class AVLTree<T extends Comparable<T>> extends BinaryTree<T> {
                 @SneakyThrows
                 @Override
                 public void insert(T x, boolean ignoreNonUnique) {
-                    throw new OperationNotSupportedException("The tree is read-only");
+                    throw new UnsupportedOperationException("The tree is read-only");
                 }
 
                 @SneakyThrows
                 @Override
                 public void delete(T x) {
-                    throw new OperationNotSupportedException("The tree is read-only");
+                    throw new UnsupportedOperationException("The tree is read-only");
                 }
             };
             roTree.setRoot(uNode);
