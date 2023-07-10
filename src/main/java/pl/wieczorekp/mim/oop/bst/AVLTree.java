@@ -55,36 +55,27 @@ public class AVLTree<T extends Comparable<T>> extends BinaryTree<T> {
             throw new NoSuchElementException();
         }
 
-        AVLNode<T> lowestAffectedByDeletion = node.parent();
         if (node.left() == null && node.right() == null) {
+            AVLNode<T> nodeParent = node.parent();
             node.detach();
             if (node == root()) {
                 root = null;
             }
+            rebalance(nodeParent);
         } else if (node.left() == null) {
             replace(node.parent(), node, node.right());
+            rebalance(node.right());
         } else if (node.right() == null) {
             replace(node.parent(), node, node.left());
+            rebalance(node.left());
         } else {
+            // This case will be entered at most once per delete method call, so the rebalancing will be performed
+            //  by delete(replacement.value()) below.
             BinaryTree<T> rightSubtree = subtree(node.right());
-            AVLNode<T> replacement = (AVLNode<T>) rightSubtree.search(rightSubtree.minimum());
-            AVLNode<T> replacementOldParent = replacement.parent();
+            Node<T> replacement = rightSubtree.search(rightSubtree.minimum());
+            delete(replacement.value());
 
-            if (replacement.value() != node.right().value()) {
-                replace(replacement.parent(), replacement, replacement.right());
-                replacement.setRight(node.right());
-                node.right().setParent(replacement);
-                replacementOldParent = replacement;
-            }
-            replace(node.parent(), node, replacement);
-            replacement.setLeft(node.left());
-            node.left().setParent(replacement);
-
-            lowestAffectedByDeletion = replacementOldParent;
-        }
-
-        if (lowestAffectedByDeletion != null) {
-            rebalance(lowestAffectedByDeletion);
+            node.setValue(replacement.value());
         }
     }
 
@@ -167,20 +158,21 @@ public class AVLTree<T extends Comparable<T>> extends BinaryTree<T> {
     }
 
     private void rebalance(AVLNode<T> node) {
-        node.updateHeight();
-        AVLNode<T> prv = node;
-        node = node.parent();
+        AVLNode<T> prv = null;
         while (node != null) {
             node.updateHeight();
             int bf = node.bf();
             if (node.needsRebalancing()) {
-                if (Integer.signum(node.bf()) == Integer.signum(prv.bf())) {
+                if (prv == null || Integer.signum(prv.bf()) == 0 || Integer.signum(node.bf()) == Integer.signum(prv.bf())) {
                     if (bf == 2)
                         rotateRight(node);
                     else if (bf == -2)
                         rotateLeft(node);
                     else
                         assert false;
+
+                    node.updateHeight();
+                    node.parent().updateHeight();
                 } else {
                     if (bf == 2) {
                         rotateLeft(prv);
@@ -192,9 +184,12 @@ public class AVLTree<T extends Comparable<T>> extends BinaryTree<T> {
                         System.out.println(bf);
                         assert false;
                     }
+
+                    node.parent().left().updateHeight();
+                    node.parent().right().updateHeight();
+                    node.parent().updateHeight();
                 }
             }
-            node.updateHeight();
             prv = node;
             node = prv.parent();
         }

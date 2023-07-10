@@ -194,8 +194,8 @@ class UnbalancedBinaryTreeTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {5, 10, 100, 1_000, 5_000, 10_000, 100_000})
-    @Timeout(value = 5, threadMode = Timeout.ThreadMode.SEPARATE_THREAD)
+    @ValueSource(ints = {5, 10, 100, 1_000, 5_000, 10_000})
+    @Timeout(value = 6, threadMode = Timeout.ThreadMode.SEPARATE_THREAD)
     void givenASetOfRandomIntegersShouldInsertAndDeleteThemRandomly(int n) {
         // given
         UnbalancedBinaryTree<Integer> tree = new UnbalancedBinaryTree<>();
@@ -216,13 +216,20 @@ class UnbalancedBinaryTreeTest {
         Collections.shuffle(valArray, rng);
 
         for (int i = 0; i < n; i++) {
+            int x = valArray.get(i);
             int min = values.first();
             int max = values.last();
 
             assertEquals(min, tree.minimum(), "Minimum mismatch at index " + i);
             assertEquals(max, tree.maximum(), "Maximum mismatch at index " + i);
-            tree.delete(valArray.get(i));
-            values.remove(valArray.get(i));
+            tree.delete(x);
+            values.remove(x);
+
+            for (Integer val : values) {
+                Node<Integer> integerNode = tree.search(val);
+
+                assertEquals(val, integerNode.value(), "Value " + x + " not found in the tree. i = " + i);
+            }
         }
     }
 }

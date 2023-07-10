@@ -1,6 +1,5 @@
 package pl.wieczorekp.mim.oop.bst;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
@@ -14,20 +13,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 class AVLTreeTest {
-    private static final long SEED = 12186469L;
+    private static final long SEED = 121864693L;
     private static final int RNG_MIN_VALUE = -10_000_000;
     private static final int RNG_MAX_VALUE = 10_000_000;
     private static Random rng;
     AVLTree<String> fullBinaryTree;
     AVLNode<String> root, rootLeftChild, rootRightChild, alpha, beta, gamma, delta;
 
-    @BeforeAll
-    static void init() {
-        rng = new Random(SEED);
-    }
-
     @BeforeEach
-    void setupTree() {
+    void setupEach() {
+        rng = new Random(SEED);
         fullBinaryTree = new AVLTree<>();
         root = new AVLNode<>("root");
         fullBinaryTree.setRoot(root);
@@ -124,11 +119,11 @@ class AVLTreeTest {
     void randomInsertTest(int n) {
         // given
         AVLTree<Integer> tree = new AVLTree<>();
-        ArrayList<Integer> values = new ArrayList<>(generateNDifferentInts(n, -2*n, 2*n));
+        ArrayList<Integer> values = new ArrayList<>(generateNDifferentInts(n, -2 * n, 2 * n));
         SortedSet<Integer> addedValues = new TreeSet<>();
 
         for (int i = 0; i < n; i++) {
-            values.add(rng.nextInt(-2*n, 2*n));
+            values.add(rng.nextInt(-2 * n, 2 * n));
         }
         Collections.shuffle(values, rng);
 
@@ -169,15 +164,12 @@ class AVLTreeTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {10, 100/*, 1_000, 10_000, 100_000, 1_000_000*/})
+    @ValueSource(ints = {10, 100, 1_000, 10_000, 100_000, 1_000_000})
     @Timeout(unit = TimeUnit.MILLISECONDS, value = 3500, threadMode = Timeout.ThreadMode.SEPARATE_THREAD)
     void givenASetOfRandomIntegersShouldRandomSearchThemInLogNTime(int n) {
-//public static void main(String[] args) {
-//        int n = 10;
-//        init();
         // given
         AVLTree<Integer> tree = new AVLTree<>();
-        SortedSet<Integer> values = generateNDifferentInts(n, RNG_MIN_VALUE, RNG_MAX_VALUE+1);
+        SortedSet<Integer> values = generateNDifferentInts(n, RNG_MIN_VALUE, RNG_MAX_VALUE + 1);
         ArrayList<Integer> valArray = new ArrayList<>(values);
         Collections.shuffle(valArray, rng);
 
@@ -196,12 +188,11 @@ class AVLTreeTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {5, 10, 100/*, 1_000, 10_000, 100_000, 1_000_000*/})
+    @ValueSource(ints = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 30, 40, 50, 60, 70, 80, 90, 100, 1_000, 10_000, 100_000, 1_000_000})
     @Timeout(value = 4, threadMode = Timeout.ThreadMode.SEPARATE_THREAD)
     void givenASetOfRandomIntegersShouldInsertAndDeleteThemMaintainingTheAVLTreeStructure(int n) {
-        // given
         AVLTree<Integer> tree = new AVLTree<>();
-        SortedSet<Integer> values = generateNDifferentInts(n, RNG_MIN_VALUE, RNG_MAX_VALUE+1);
+        SortedSet<Integer> values = generateNDifferentInts(n, RNG_MIN_VALUE, RNG_MAX_VALUE + 1);
         ArrayList<Integer> valArray = new ArrayList<>(values);
         Collections.shuffle(valArray, rng);
 
@@ -221,10 +212,11 @@ class AVLTreeTest {
             assertEquals(max, tree.maximum(), "Maximum mismatch at index " + i);
             tree.delete(valArray.get(i));
             values.remove(valArray.get(i));
+
         }
     }
 
-    private SortedSet<Integer> generateNDifferentInts(int n, int lb, int ub) {
+    private static SortedSet<Integer> generateNDifferentInts(int n, int lb, int ub) {
         SortedSet<Integer> values = new TreeSet<>();
         while (values.size() < n) {
             values.add(rng.nextInt(lb, ub));

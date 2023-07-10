@@ -1,5 +1,8 @@
 package pl.wieczorekp.mim.oop.bst;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
+
 public abstract class BinaryTree<T extends Comparable<T>> {
     protected Node<T> root;
 
@@ -107,5 +110,23 @@ public abstract class BinaryTree<T extends Comparable<T>> {
 
         if (byNode != null)
             byNode.setParent(inNode);
+    }
+
+    public void displayEdges() {
+        Deque<Node<T>> edges = new ArrayDeque<>();
+        if (root() != null)
+            edges.push(root());
+
+        while (!edges.isEmpty()) {
+            Node<T> node = edges.poll();
+            if (node.left() != null) {
+                System.out.printf("%s %s L\n", node.value(), node.left().value());
+                edges.push(node.left());
+            }
+            if (node.right() != null) {
+                System.out.printf("%s %s R\n", node.value(), node.right().value());
+                edges.push(node.right());
+            }
+        }
     }
 }
